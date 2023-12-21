@@ -7,7 +7,15 @@
 <script src="https://storage.googleapis.com/butterfly-static/build/embed-bundle.js"></script>
 <script>
   window.onload = function() {
-    embedChatApp('container', "476", "https://houseelf.app/graphql", "wss://houseelf.app/graphql");
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const paramValue = urlParams.get('debug'); // This will be 'value1'
+    if (param === '1') {
+      embedChatApp('container', "476", "https://houseelf.app/graphql", "wss://houseelf.app/graphql", "76a3aab9-18c2-451e-9cba-1f70471dfd71");
+    }
+    else {
+      embedChatApp('container', "476", "https://houseelf.app/graphql", "wss://houseelf.app/graphql");
+    }
   };
 </script>
 </body>
