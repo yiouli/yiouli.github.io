@@ -9,15 +9,29 @@
   <h1>GoPixie.ai Embed App Playground</h1>
 
   <!-- Input field for appId -->
-  <label for="appIdInput">Enter AppId:</label>
+  <label for="appIdInput">Enter App Id:</label>
   <input type="text" id="appIdInput">
-  <button id="updateAppIdButton" onclick="updateAppId()">Update AppId</button>
+  <button id="updateAppIdButton" onclick="updateAppId()">Update App Id</button>
 
   <!-- The chat element -->
   <script src="https://storage.googleapis.com/butterfly-static/build/embed-bundle.js"></script>
-  <go-pixie-chat id="pixieChat" appid="104"></go-pixie-chat>
+  <go-pixie-chat id="pixieChat"></go-pixie-chat>
 
   <script>
+    // Function to get query parameters
+    function getQueryParams() {
+      var params = {};
+      var search = window.location.search.substring(1);
+      if (search) {
+        search.split('&').forEach(function (part) {
+          var pair = part.split('=');
+          params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+        });
+      }
+      return params;
+    }
+
+    // Function to update the appId attribute
     function updateAppId() {
       // Get the value from the input field
       var newAppId = document.getElementById('appIdInput').value;
@@ -28,6 +42,12 @@
       // Update the appId attribute
       pixieChatElement.setAttribute('appid', newAppId);
     }
+
+    // Set the initial appId based on query parameter
+    var params = getQueryParams();
+    var initialAppId = params['appid'] || '104'; // Default appid if not present in query param
+    document.getElementById('pixieChat').setAttribute('appid', initialAppId);
+    document.getElementById('appIdInput').value = initialAppId;
   </script>
 </body>
 
