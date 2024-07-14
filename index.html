@@ -22,17 +22,17 @@
     </div>
     <div
       style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-      <label for="primaryColorInput">Primary Color:</label>
+      <label for="primaryColorInput">1st Accent Color:</label>
       <input type="color" id="primaryColorInput" onchange="updateColor(event, 'primarycolor')">
     </div>
     <div
       style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-      <label for="secondaryColorInput">Secondary Color:</label>
+      <label for="secondaryColorInput">2nd Accent Color:</label>
       <input type="color" id="secondaryColorInput" onchange="updateColor(event, 'secondarycolor')">
     </div>
     <div
       style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-      <label for="highlightColorInput">Highlight Color:</label>
+      <label for="highlightColorInput">Error Color:</label>
       <input type="color" id="highlightColorInput" onchange="updateColor(event, 'highlightcolor')">
     </div>
   </div>
@@ -84,11 +84,14 @@
 
     var chatElem = document.getElementById('pixieChat')
     chatElem.setAttribute('appid', initialAppId);
-    var palette = chatElem.getDefaultPalette();
-    document.getElementById('backgroundColorInput').value = palette.primary;
-    document.getElementById('primaryColorInput').value = palette.accent1;
-    document.getElementById('secondaryColorInput').value = palette.accent2;
-    document.getElementById('highlightColorInput').value = palette.callToAction;
+
+    chatElem.addEventListener('palettechange', function (e) {
+      var palette = e.detail;
+      document.getElementById('backgroundColorInput').value = palette.primary;
+      document.getElementById('primaryColorInput').value = palette.accent1;
+      document.getElementById('secondaryColorInput').value = palette.accent2;
+      document.getElementById('highlightColorInput').value = palette.callToAction;
+    });
   </script>
 </body>
 
