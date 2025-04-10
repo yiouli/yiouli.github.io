@@ -12,8 +12,7 @@
   <label for="appIdInput">Enter App Id:</label>
   <input type="text" id="appIdInput">
   <button id="updateAppIdButton" onclick="updateAppId()">Update App Id</button>
-  <!-- Container for palette inputs -->
-  <div style="display: flex; flex-direction: column; margin-top: 20px; width: 200px;">
+  <div style="display: flex; flex-direction: column; margin-top: 20px; width: 600px;">
     <!-- Input fields for palette colors -->
     <div
       style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin-bottom: 10px;">
@@ -23,17 +22,37 @@
     <div
       style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin-bottom: 10px;">
       <label for="primaryColorInput">1st Accent Color:</label>
-      <input type="color" id="primaryColorInput" onchange="updateColor(event, 'primarycolor')">
+      <input type="color" value="#fff" id="primaryColorInput" onchange="updateColor(event, 'primarycolor')">
     </div>
     <div
       style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin-bottom: 10px;">
       <label for="secondaryColorInput">2nd Accent Color:</label>
-      <input type="color" id="secondaryColorInput" onchange="updateColor(event, 'secondarycolor')">
+      <input type="color" value="#fff" id="secondaryColorInput" onchange="updateColor(event, 'secondarycolor')">
     </div>
     <div
       style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin-bottom: 10px;">
       <label for="highlightColorInput">Error Color:</label>
-      <input type="color" id="highlightColorInput" onchange="updateColor(event, 'highlightcolor')">
+      <input type="color" value="#fff" id="highlightColorInput" onchange="updateColor(event, 'highlightcolor')">
+    </div>
+    <div
+      style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+      <label for="fontSizeInput">Font Size:</label>
+      <input type="number" value="14" id="fontSizeInput" onchange="updateFontSize(event)">
+    </div>
+    <div
+      style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+      <label for="fontFamilyInput">Font Family:</label>
+      <input value="arial" id="fontFamilyInput" onchange="updateFontFamily(event)">
+    </div>
+    <div
+      style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+      <label for="fabSizeInput">FAB Size:</label>
+      <input value="80px" id="fabSizeInput" onchange="updateFabSize(event)">
+    </div>
+    <div
+      style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+      <label for="fabSpacingInput">FAB Spacing:</label>
+      <input value="80px" id="fabSpacingInput" onchange="updateFabSpacing(event)">
     </div>
   </div>
   <!-- The chat element -->
@@ -52,6 +71,51 @@
       // Update the corresponding color attribute
       pixieChatElement.setAttribute(colorType, newColor);
     }
+
+    function updateFontSize(event) {
+      // Get the value from the color input field
+      var value = event.target.value;
+
+      // Get the go-pixie-chat element
+      var pixieChatElement = document.getElementById('pixieChat');
+
+      // Update the corresponding color attribute
+      pixieChatElement.setAttribute('fontsize', value);
+    }
+
+    function updateFontFamily(event) {
+      // Get the value from the color input field
+      var value = event.target.value;
+
+      // Get the go-pixie-chat element
+      var pixieChatElement = document.getElementById('pixieChat');
+
+      // Update the corresponding color attribute
+      pixieChatElement.setAttribute('fontfamily', value);
+    }
+
+    function updateFabSize(event) {
+      // Get the value from the color input field
+      var value = event.target.value;
+
+      // Get the go-pixie-chat element
+      var pixieChatElement = document.getElementById('pixieChat');
+
+      // Update the corresponding color attribute
+      pixieChatElement.setAttribute('fabsize', value);
+    }
+
+    function updateFabSpacing(event) {
+      // Get the value from the color input field
+      var value = event.target.value;
+
+      // Get the go-pixie-chat element
+      var pixieChatElement = document.getElementById('pixieChat');
+
+      // Update the corresponding color attribute
+      pixieChatElement.setAttribute('fabspacing', value);
+    }
+
     // Function to get query parameters
     function getQueryParams() {
       var params = {};
@@ -79,7 +143,7 @@
 
     // Set the initial appId based on query parameter
     var params = getQueryParams();
-    var initialAppId = params['appid'] || '104'; // Default appid if not present in query param
+    var initialAppId = params['appid'] || '214'; // Default appid if not present in query param
     document.getElementById('appIdInput').value = initialAppId;
 
     var chatElem = document.getElementById('pixieChat')
@@ -91,6 +155,16 @@
       document.getElementById('primaryColorInput').value = palette.accent1;
       document.getElementById('secondaryColorInput').value = palette.accent2;
       document.getElementById('highlightColorInput').value = palette.callToAction;
+    });
+
+    chatElem.addEventListener('fontchange', function (e) {
+      document.getElementById('fontSizeInput').value = e.detail.fontSize.toString();
+      document.getElementById('fontFamilyInput').value = e.detail.fontFamily;
+    });
+
+    chatElem.addEventListener('fablayoutchange', function (e) {
+      document.getElementById('fabSizeInput').value = e.detail.fabSize;
+      document.getElementById('fabSpacingInput').value = e.detail.fabSpacing;
     });
   </script>
 </body>
