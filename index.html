@@ -143,7 +143,7 @@
 
     // Set the initial appId based on query parameter
     var params = getQueryParams();
-    var initialAppId = params['appid'] || '214'; // Default appid if not present in query param
+    var initialAppId = params['appid'] || '104'; // Default appid if not present in query param
     document.getElementById('appIdInput').value = initialAppId;
 
     var chatElem = document.getElementById('pixieChat')
@@ -163,8 +163,8 @@
     });
 
     chatElem.addEventListener('fablayoutchange', function (e) {
-      document.getElementById('fabSizeInput').value = e.detail.fabSize;
-      document.getElementById('fabSpacingInput').value = e.detail.fabSpacing;
+      document.getElementById('fabSizeInput').value = JSON.stringify(e.detail.fabSize);
+      document.getElementById('fabSpacingInput').value = JSON.stringify(e.detail.fabSpacing);
     });
   </script>
 </body>
