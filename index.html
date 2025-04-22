@@ -11,7 +11,8 @@
   <!-- Input field for appId -->
   <label for="appIdInput">Enter App Id:</label>
   <input type="text" id="appIdInput">
-  <button id="updateAppIdButton" onclick="updateAppId()">Update App Id</button>
+  <button id="updateAppIdButton" onclick="updateAppId()">Update Web App Id</button>
+  <button id="startExtensionAppButton" onclick="startExtensionApp()">Start Extension App</button>
   <div style="display: flex; flex-direction: column; margin-top: 20px; width: 600px;">
     <!-- Input fields for palette colors -->
     <div
@@ -141,9 +142,15 @@
       pixieChatElement.setAttribute('appid', newAppId);
     }
 
+    function startExtensionApp() {
+      // Get the value from the input field
+      var newAppId = document.getElementById('appIdInput').value;
+      GoPixie.startExtensionApp(newAppId);
+    }
+
     // Set the initial appId based on query parameter
     var params = getQueryParams();
-    var initialAppId = params['appid'] || '104'; // Default appid if not present in query param
+    var initialAppId = params['appid'] || '214'; // Default appid if not present in query param
     document.getElementById('appIdInput').value = initialAppId;
 
     var chatElem = document.getElementById('pixieChat')
