@@ -487,7 +487,15 @@
 
     // Render the survey based on configuration
     function renderSurvey() {
+      if (!surveyData) {
+        console.warn('Cannot render survey: surveyData is not available');
+        return;
+      }
+
       document.getElementById('form-title').textContent = surveyData.title;
+
+      // Update the webpage title
+      document.title = "Survey: " + surveyData.title;
 
       if (surveyData.description) {
         const descriptionElement = document.getElementById('form-description');
