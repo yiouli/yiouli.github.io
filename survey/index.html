@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Survey Application</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: #f0f0f0;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .title-card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #673ab7, #9c27b0);
+      color: white;
+      padding: 20px 30px;
+      text-align: center;
+    }
+
+    .title-section {
+      background: white;
+      padding: 40px 30px;
+    }
+
+    .title-section h1 {
+      font-size: 32px;
+      font-weight: 400;
+      margin-bottom: 20px;
+      line-height: 1.3;
+      color: #333;
+      text-align: left;
+    }
+
+    .title-section p {
+      font-size: 18px;
+      line-height: 1.6;
+      color: #333;
+      margin: 0;
+      white-space: pre-line;
+      text-align: left;
+    }
+
+    .section-card {
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .section-card.active {
+      display: block;
+    }
+
+    .section-header {
+      background: #673ab7;
+      color: white;
+      padding: 20px 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 5px;
+    }
+
+    .section-description {
+      font-size: 14px;
+      opacity: 0.9;
+      line-height: 1.4;
+    }
+
+    .question {
+      background: white;
+      padding: 24px 30px;
+      margin-bottom: 16px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .question:last-child {
+      margin-bottom: 16px;
+    }
+
+    .question-text {
+      font-size: 18px;
+      margin-bottom: 20px;
+      color: #333;
+      line-height: 1.4;
+      font-weight: 500;
+    }
+
+    .question-text .required {
+      color: #d93025;
+      margin-left: 4px;
+    }
+
+    .scales-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .scale {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .scale-label {
+      font-size: 16px;
+      font-weight: bold;
+      color: #333;
+      min-width: 120px;
+      text-align: left;
+    }
+
+    .scale-content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 600px;
+      min-height: 50px;
+    }
+
+    .scale-start-label {
+      font-size: 18px;
+      color: #666;
+      min-width: 80px;
+      max-width: 100px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      word-wrap: break-word;
+      hyphens: auto;
+      line-height: 1.2;
+    }
+
+    .scale-end-label {
+      font-size: 18px;
+      color: #666;
+      min-width: 80px;
+      max-width: 100px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      word-wrap: break-word;
+      hyphens: auto;
+      line-height: 1.2;
+    }
+
+    .scale-slider-container {
+      flex: 1;
+      margin: 0 15px;
+      position: relative;
+    }
+
+    .scale-slider {
+      width: 100%;
+      height: 6px;
+      border-radius: 3px;
+      background: #e0e0e0;
+      outline: none;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+      cursor: pointer;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .scale-slider:hover {
+      opacity: 1;
+    }
+
+    .scale-slider::-webkit-slider-thumb {
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #673ab7;
+      cursor: pointer;
+    }
+
+    .scale-slider::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #673ab7;
+      cursor: pointer;
+      border: none;
+    }
+
+    .scale-ticks {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 8px;
+      position: relative;
+    }
+
+    .scale-tick {
+      width: 2px;
+      height: 8px;
+      background: #ccc;
+      position: relative;
+    }
+
+    .scale-tick:first-child,
+    .scale-tick:last-child {
+      background: #666;
+    }
+
+    .validation-error {
+      color: #d93025;
+      font-size: 12px;
+      margin-top: 8px;
+    }
+
+    .question.error .question-text {
+      color: #d93025;
+    }
+
+    .question.error {
+      background-color: #ffeaea;
+    }
+
+    .navigation {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 30px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-btn {
+      background: #673ab7;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .nav-btn:hover:not(:disabled) {
+      background: #5e35b1;
+    }
+
+    .nav-btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+
+    .nav-btn.secondary {
+      background: transparent;
+      color: #673ab7;
+      border: 1px solid #673ab7;
+    }
+
+    .nav-btn.secondary:hover:not(:disabled) {
+      background: #f3e5f5;
+    }
+
+    .section-progress {
+      font-size: 14px;
+      color: #666;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+
+      .title-section {
+        padding: 30px 20px;
+      }
+
+      .title-section h1 {
+        font-size: 24px;
+      }
+
+      .question {
+        padding: 20px;
+      }
+
+      .scale {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .scale-label {
+        min-width: auto;
+        margin-bottom: 8px;
+      }
+
+      .scale-content {
+        width: 100%;
+        max-width: none;
+        align-items: flex-start;
+      }
+
+      .scale-start-label,
+      .scale-end-label {
+        font-size: 14px;
+        min-width: 60px;
+        max-width: 80px;
+        line-height: 1.1;
+        padding: 0 5px;
+      }
+
+      .scale-slider-container {
+        margin: 0 10px;
+        align-self: center;
+      }
+
+      .navigation {
+        padding: 15px 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+
+      .scale-start-label,
+      .scale-end-label {
+        font-size: 12px;
+        min-width: 50px;
+        max-width: 70px;
+        padding: 0 3px;
+      }
+
+      .scale-slider-container {
+        margin: 0 8px;
+      }
+
+      .title-section {
+        padding: 30px 20px 20px 20px;
+      }
+
+      .title-section h1 {
+        font-size: 28px;
+        margin-bottom: 15px;
+      }
+
+      .title-section p {
+        font-size: 16px;
+        line-height: 1.5;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="title-card">
+      <div class="header"></div>
+      <div class="title-section">
+        <h1 id="form-title">Loading...</h1>
+        <p id="form-description"></p>
+      </div>
+    </div>
+
+    <form id="survey-form">
+      <!-- Sections will be populated here -->
+    </form>
+  </div>
+
+  <script>
+    let surveyData = null;
+    let responses = {};
+    let currentSectionIndex = 0;
+
+    // Load survey configuration
+    async function loadSurveyConfig() {
+      try {
+        const response = await fetch('survey-config.json');
+        surveyData = await response.json();
+        renderSurvey();
+      } catch (error) {
+        console.error('Error loading survey configuration:', error);
+        document.getElementById('form-title').textContent = 'Error loading survey';
+      }
+    }
+
+    // Render the survey based on configuration
+    function renderSurvey() {
+      document.getElementById('form-title').textContent = surveyData.title;
+
+      if (surveyData.description) {
+        const descriptionElement = document.getElementById('form-description');
+        descriptionElement.textContent = surveyData.description;
+        descriptionElement.parentElement.style.display = 'block';
+      } else {
+        document.getElementById('form-description').parentElement.style.display = 'none';
+      }
+
+      const formContent = document.getElementById('survey-form');
+      formContent.innerHTML = '';
+
+      surveyData.sections.forEach((section, sectionIndex) => {
+        const sectionElement = createSection(section, sectionIndex);
+        formContent.appendChild(sectionElement);
+      });
+
+      showCurrentSection();
+    }
+
+    // Create a section element
+    function createSection(section, sectionIndex) {
+      const sectionDiv = document.createElement('div');
+      sectionDiv.className = 'section-card';
+      sectionDiv.dataset.sectionIndex = sectionIndex;
+
+      if (section.title) {
+        const headerDiv = document.createElement('div');
+        headerDiv.className = 'section-header';
+
+        const titleDiv = document.createElement('div');
+        titleDiv.className = 'section-title';
+        titleDiv.textContent = section.title;
+        headerDiv.appendChild(titleDiv);
+
+        if (section.description) {
+          const descDiv = document.createElement('div');
+          descDiv.className = 'section-description';
+          descDiv.textContent = section.description;
+          headerDiv.appendChild(descDiv);
+        }
+
+        sectionDiv.appendChild(headerDiv);
+      }
+
+      section.questions.forEach((question, questionIndex) => {
+        const questionElement = createQuestion(question, sectionIndex, questionIndex);
+        sectionDiv.appendChild(questionElement);
+      });
+
+      // Add navigation
+      const navigation = document.createElement('div');
+      navigation.className = 'navigation';
+
+      const backBtn = document.createElement('button');
+      backBtn.type = 'button';
+      backBtn.className = 'nav-btn secondary';
+      backBtn.textContent = 'Back';
+      backBtn.disabled = sectionIndex === 0;
+      backBtn.addEventListener('click', () => navigateSection(-1));
+
+      const progress = document.createElement('div');
+      progress.className = 'section-progress';
+      progress.textContent = `${sectionIndex + 1} of ${surveyData.sections.length}`;
+
+      const nextBtn = document.createElement('button');
+      nextBtn.type = 'button';
+      nextBtn.className = 'nav-btn';
+      if (sectionIndex === surveyData.sections.length - 1) {
+        nextBtn.textContent = 'Submit';
+        nextBtn.addEventListener('click', submitSurvey);
+      } else {
+        nextBtn.textContent = 'Next';
+        nextBtn.addEventListener('click', () => navigateSection(1));
+      }
+
+      navigation.appendChild(backBtn);
+      navigation.appendChild(progress);
+      navigation.appendChild(nextBtn);
+
+      sectionDiv.appendChild(navigation);
+
+      return sectionDiv;
+    }
+
+    // Create a question element
+    function createQuestion(question, sectionIndex, questionIndex) {
+      const questionDiv = document.createElement('div');
+      questionDiv.className = 'question';
+      questionDiv.dataset.sectionIndex = sectionIndex;
+      questionDiv.dataset.questionIndex = questionIndex;
+
+      const questionText = document.createElement('div');
+      questionText.className = 'question-text';
+      // Capitalize first letter
+      const capitalizedText = question.text.charAt(0).toUpperCase() + question.text.slice(1);
+      questionText.innerHTML = capitalizedText + (question.required ? '<span class="required">*</span>' : '');
+      questionDiv.appendChild(questionText);
+
+      const scalesContainer = document.createElement('div');
+      scalesContainer.className = 'scales-container';
+
+      // Importance scale (1-5)
+      const importanceScale = createScale('Importance', 5,
+        ['Not Important', 'Very Important'],
+        `importance_${sectionIndex}_${questionIndex}`
+      );
+      scalesContainer.appendChild(importanceScale);
+
+      // Satisfaction scale (1-7)
+      const satisfactionScale = createScale('Satisfaction', 7,
+        ['Very Unsatisfied', 'Very Satisfied'],
+        `satisfaction_${sectionIndex}_${questionIndex}`
+      );
+      scalesContainer.appendChild(satisfactionScale);
+
+      questionDiv.appendChild(scalesContainer);
+
+      return questionDiv;
+    }
+
+    // Create a scale element
+    function createScale(label, max, labels, name) {
+      const scaleDiv = document.createElement('div');
+      scaleDiv.className = 'scale';
+
+      const scaleLabel = document.createElement('div');
+      scaleLabel.className = 'scale-label';
+      scaleLabel.textContent = label;
+      scaleDiv.appendChild(scaleLabel);
+
+      const scaleContent = document.createElement('div');
+      scaleContent.className = 'scale-content';
+
+      // Start label
+      const startLabel = document.createElement('div');
+      startLabel.className = 'scale-start-label';
+      startLabel.textContent = labels[0];
+      scaleContent.appendChild(startLabel);
+
+      // Slider container
+      const sliderContainer = document.createElement('div');
+      sliderContainer.className = 'scale-slider-container';
+
+      // Create slider
+      const slider = document.createElement('input');
+      slider.type = 'range';
+      slider.className = 'scale-slider';
+      slider.min = 1;
+      slider.max = max;
+      slider.step = 1;
+      slider.name = name;
+
+      // Set default value to middle
+      const middleValue = Math.ceil(max / 2);
+      slider.value = middleValue;
+      responses[name] = middleValue;
+
+      slider.addEventListener('input', (e) => {
+        responses[name] = parseInt(e.target.value);
+        clearValidationError(slider.closest('.question'));
+      });
+
+      sliderContainer.appendChild(slider);
+
+      // Create tick marks
+      const ticksContainer = document.createElement('div');
+      ticksContainer.className = 'scale-ticks';
+      for (let i = 1; i <= max; i++) {
+        const tick = document.createElement('div');
+        tick.className = 'scale-tick';
+        ticksContainer.appendChild(tick);
+      }
+      sliderContainer.appendChild(ticksContainer);
+
+      scaleContent.appendChild(sliderContainer);
+
+      // End label
+      const endLabel = document.createElement('div');
+      endLabel.className = 'scale-end-label';
+      endLabel.textContent = labels[1];
+      scaleContent.appendChild(endLabel);
+
+      scaleDiv.appendChild(scaleContent);
+
+      return scaleDiv;
+    }
+
+    // Clear validation error
+    function clearValidationError(questionElement) {
+      questionElement.classList.remove('error');
+      const errorElement = questionElement.querySelector('.validation-error');
+      if (errorElement) {
+        errorElement.remove();
+      }
+    }
+
+    // Show validation error
+    function showValidationError(questionElement, message) {
+      questionElement.classList.add('error');
+
+      let errorElement = questionElement.querySelector('.validation-error');
+      if (!errorElement) {
+        errorElement = document.createElement('div');
+        errorElement.className = 'validation-error';
+        questionElement.appendChild(errorElement);
+      }
+      errorElement.textContent = message;
+    }
+
+    // Validate form
+    function validateForm() {
+      let isValid = true;
+      const questions = document.querySelectorAll('.question');
+
+      questions.forEach(questionElement => {
+        const sectionIndex = questionElement.dataset.sectionIndex;
+        const questionIndex = questionElement.dataset.questionIndex;
+        const question = surveyData.sections[sectionIndex].questions[questionIndex];
+
+        if (question.required) {
+          const importanceName = `importance_${sectionIndex}_${questionIndex}`;
+          const satisfactionName = `satisfaction_${sectionIndex}_${questionIndex}`;
+
+          const hasImportance = responses[importanceName];
+          const hasSatisfaction = responses[satisfactionName];
+
+          if (!hasImportance || !hasSatisfaction) {
+            showValidationError(questionElement, 'Please provide ratings for both importance and satisfaction by moving the sliders.');
+            isValid = false;
+          } else {
+            clearValidationError(questionElement);
+          }
+        }
+      });
+
+      return isValid;
+    }
+
+    // Show current section
+    function showCurrentSection() {
+      const sections = document.querySelectorAll('.section-card');
+      sections.forEach((section, index) => {
+        if (index === currentSectionIndex) {
+          section.classList.add('active');
+        } else {
+          section.classList.remove('active');
+        }
+      });
+    }
+
+    // Navigate between sections
+    function navigateSection(direction) {
+      const newIndex = currentSectionIndex + direction;
+
+      if (newIndex >= 0 && newIndex < surveyData.sections.length) {
+        // Validate current section before moving forward
+        if (direction > 0 && !validateCurrentSection()) {
+          return;
+        }
+
+        currentSectionIndex = newIndex;
+        showCurrentSection();
+
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    // Validate current section
+    function validateCurrentSection() {
+      const currentSection = document.querySelector(`.section-card[data-section-index="${currentSectionIndex}"]`);
+      const questions = currentSection.querySelectorAll('.question');
+      let isValid = true;
+
+      questions.forEach(questionElement => {
+        const sectionIndex = questionElement.dataset.sectionIndex;
+        const questionIndex = questionElement.dataset.questionIndex;
+        const question = surveyData.sections[sectionIndex].questions[questionIndex];
+
+        if (question.required) {
+          const importanceName = `importance_${sectionIndex}_${questionIndex}`;
+          const satisfactionName = `satisfaction_${sectionIndex}_${questionIndex}`;
+
+          const hasImportance = responses[importanceName];
+          const hasSatisfaction = responses[satisfactionName];
+
+          if (!hasImportance || !hasSatisfaction) {
+            showValidationError(questionElement, 'Please provide ratings for both importance and satisfaction by moving the sliders.');
+            isValid = false;
+          } else {
+            clearValidationError(questionElement);
+          }
+        }
+      });
+
+      return isValid;
+    }
+
+    // Submit survey
+    function submitSurvey() {
+      if (validateForm()) {
+        console.log('Survey responses:', responses);
+        alert('Survey submitted successfully! Check the console for responses.');
+
+        // Here you would typically send the data to a server
+        // fetch('/submit-survey', {
+        //     method: 'POST',
+        //     headers: { 'Content-Type': 'application/json' },
+        //     body: JSON.stringify(responses)
+        // });
+      } else {
+        // Scroll to first error
+        const firstError = document.querySelector('.question.error');
+        if (firstError) {
+          firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }
+    }
+
+    // Initialize the survey
+    loadSurveyConfig();
+  </script>
+</body>
+
+</html>
+
+</html>
+
+</html>

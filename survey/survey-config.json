@@ -1,0 +1,190 @@
+{
+    "title": "What would make managing your team better?",
+    "description": "For the list of objectives below, please rate how important each objective is to making managing your team better, and how satisfied you are with its state in your current job.",
+    "sections": [
+        {
+            "title": "Set Performance Expectations",
+            "questions": [
+                {
+                    "required": true,
+                    "text": "reduce the effort required to determine performance expectations"
+                },
+                {
+                    "required": true,
+                    "text": "increase agree-ability of performance expectations"
+                },
+                {
+                    "required": true,
+                    "text": "reduce the effort required to communicate performance expectations"
+                },
+                {
+                    "required": true,
+                    "text": "minimize the possibility of misunderstanding of performance expectations"
+                },
+                {
+                    "required": true,
+                    "text": "reduce the effort required to understand employee's alignment on expectations"
+                },
+                {
+                    "required": true,
+                    "text": "reduce the possibility of misunderstanding employee's alignment on expectations"
+                },
+                {
+                    "required": true,
+                    "text": "shorten the time to adjust performance expectations"
+                },
+                {
+                    "required": true,
+                    "text": "reduce the effort required to adjust performance expectations"
+                },
+                {
+                    "required": true,
+                    "text": "reduce the effort required to gather signals on performance"
+                }
+            ]
+        },
+        {
+            "title": "Track Employee Performance",
+            "questions": [
+                {
+                    "required": true,
+                    "text": "increase the quality of signals on performance"
+                },
+                {
+                    "required": true,
+                    "text": "increase the amount of signals on performance"
+                },
+                {
+                    "required": true,
+                    "text": "reduce the effort required to interpret performance signals"
+                },
+                {
+                    "required": true,
+                    "text": "reduce the change to misinterpret performance signals"
+                },
+                {
+                    "required": true,
+                    "text": "reduce the effort required to identify performance gaps"
+                },
+                {
+                    "required": true,
+                    "text": "reduce the time delay to identify performance gaps"
+                },
+                {
+                    "required": true,
+                    "text": "reduce the chance of missing performance gaps"
+                },
+                {
+                    "required": true,
+                    "text": "reduce the change of wrongly identify non-existent performance gaps"
+                },
+                {
+                    "required": true,
+                    "text": "reduce the effort required to identify good performance"
+                },
+                {
+                    "required": true,
+                    "text": "reduce the time delay to identify good performance"
+                },
+                {
+                    "required": true,
+                    "text": "reduce the chance of missing good performance"
+                },
+                {
+                    "required": true,
+                    "text": "reduce the change of wrongly identify good performance"
+                },
+                {
+                    "required": true,
+                    "text": "reduce the effort required to form constructive feedback"
+                }
+            ]
+        },
+        {
+            "title": "Give Feedback",
+            "questions": [
+                {
+                    "required": true,
+                    "text": "increase the quality of constructive feedback"
+                },
+                {
+                    "required": true,
+                    "text": "increase the frequency of giving constructive feedback"
+                },
+                {
+                    "required": true,
+                    "text": "reduce the difficulty to deliver constructive feedback"
+                },
+                {
+                    "required": true,
+                    "text": "reduce the effort required to understand reception of constructive feedback"
+                },
+                {
+                    "required": true,
+                    "text": "reduce the time-delay to understand reception of constructive feedback"
+                },
+                {
+                    "required": true,
+                    "text": "reduce the effort required to form reinforcing feedback"
+                },
+                {
+                    "required": true,
+                    "text": "increase the quality of reinforcing feedback"
+                },
+                {
+                    "required": true,
+                    "text": "increase the frequency of giving reinforcing feedback"
+                },
+                {
+                    "required": true,
+                    "text": "reduce the difficulty to deliver reinforcing feedback"
+                },
+                {
+                    "required": true,
+                    "text": "reduce the effort required to understand reception of reinforcing feedback"
+                },
+                {
+                    "required": true,
+                    "text": "reduce the time-delay to understand reception of reinforcing feedback"
+                }
+            ]
+        },
+        {
+            "title": "Complete Performance Review",
+            "questions": [
+                {
+                    "required": true,
+                    "text": "reduce the effort required to determine performance ratings"
+                },
+                {
+                    "required": true,
+                    "text": "reduce bias in performance ratings"
+                },
+                {
+                    "required": true,
+                    "text": "improve the defensibility of performance ratings"
+                },
+                {
+                    "required": true,
+                    "text": "increase employee acceptance of performance ratings"
+                },
+                {
+                    "required": true,
+                    "text": "reduce conflicts arising from performance ratings"
+                },
+                {
+                    "required": true,
+                    "text": "reduce the effort required to determine promotion readiness"
+                },
+                {
+                    "required": true,
+                    "text": "reduce bias in promotion decisions"
+                },
+                {
+                    "required": true,
+                    "text": "improve the defensibility of promotion decisions"
+                }
+            ]
+        }
+    ]
+}
