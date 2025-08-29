@@ -381,6 +381,25 @@
       }
     }
 
+    // Update body padding based on floating elements height
+    function updateBodyPadding() {
+      const progressBarContainer = document.querySelector('.progress-bar-container');
+      const titleCard = document.querySelector('.title-card');
+
+      let totalHeight = 0;
+
+      if (progressBarContainer) {
+        totalHeight += progressBarContainer.offsetHeight;
+      }
+
+      if (titleCard && titleCard.style.display !== 'none') {
+        totalHeight += titleCard.offsetHeight;
+      }
+
+      // Add a small buffer (10px)
+      document.body.style.paddingTop = (totalHeight + 10) + 'px';
+    }
+
     // Render the survey based on configuration
     function renderSurvey() {
       document.getElementById('form-title').textContent = surveyData.title;
@@ -402,6 +421,11 @@
       });
 
       showCurrentSection();
+
+      // Set initial body padding after rendering
+      setTimeout(() => {
+        updateBodyPadding();
+      }, 0);
     }
 
     // Create a section element
@@ -885,6 +909,9 @@
       } else {
         titleCard.style.display = 'block';
       }
+
+      // Update body padding after potentially changing title card visibility
+      updateBodyPadding();
     }
 
     // Navigate between sections
@@ -1025,6 +1052,9 @@
 
     // Initialize the survey
     loadSurveyConfig();
+
+    // Update padding on window resize
+    window.addEventListener('resize', updateBodyPadding);
   </script>
 </body>
 

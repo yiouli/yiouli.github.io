@@ -9,8 +9,6 @@ body {
   background-color: #f0f0f0;
   min-height: 100vh;
   padding: 20px;
-  padding-top: 220px;
-  /* Increased to accommodate both progress bar and title card */
 }
 
 .progress-bar-container {
@@ -531,8 +529,6 @@ body {
 @media (max-width: 600px) {
   body {
     padding: 10px;
-    padding-top: 200px;
-    /* Adjusted for mobile sticky header */
   }
 
   .progress-bar-container {
@@ -631,10 +627,6 @@ body {
 }
 
 @media (max-width: 480px) {
-  body {
-    padding-top: 180px;
-    /* Further adjusted for smaller screens */
-  }
 
   .title-card {
     top: 60px;
