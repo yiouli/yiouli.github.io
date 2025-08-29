@@ -855,10 +855,10 @@
       slider.step = 1;
       slider.name = name;
 
-      // Set default value to middle
-      const middleValue = Math.ceil(max / 2);
-      slider.value = middleValue;
-      responses[name] = middleValue;
+      // Set default value: 1 for importance, middle for others
+      const defaultValue = label === 'Importance' ? 1 : Math.ceil(max / 2);
+      slider.value = defaultValue;
+      responses[name] = defaultValue;
 
       // Disable slider if in read-only mode
       if (isReadOnlyMode) {
