@@ -615,7 +615,6 @@
         took to complete this survey.
       </p>
       <div class="success-actions">
-        <button class="success-btn secondary" onclick="startNewSurvey()">Take Survey Again</button>
         <button class="success-btn" onclick="viewResponses()">View My Responses</button>
       </div>
     </div>
@@ -1415,35 +1414,40 @@
 
     // Reset survey function
     function resetSurvey() {
-      // Don't allow reset in read-only mode
-      if (isReadOnlyMode) {
-        alert('Cannot reset survey while in view mode. Please return to summary first.');
-        return;
-      }
+      responses = {};
 
-      if (confirm('Are you sure you want to reset the survey? This will clear all your answers.')) {
-        // Clear all responses
-        responses = {};
+      // Clear tracking sets
+      completedSections.clear();
+      interactedQuestions.clear();
 
-        // Clear tracking sets
-        completedSections.clear();
-        interactedQuestions.clear();
+      // Clear localStorage AND submission flag
+      clearState();
+      clearSubmissionFlag();
 
-        // Clear localStorage but keep submission flag
-        clearState();
+      // Exit read-only mode if we're in it
+      isReadOnlyMode = false;
 
-        // Reset to first section
-        currentSectionIndex = 0;
+      // Reset to first section
+      currentSectionIndex = 0;
 
-        // Re-render the survey
+      // Hide success view and show survey form
+      hideSuccessView();
+
+      // Re-render the survey to ensure fresh state
+      if (surveyData) {
         renderSurvey();
-
-        // Update progress to 0%
-        updateProgress();
-
-        // Scroll to top
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        // If surveyData is not loaded yet, reload the config
+        loadSurveyConfig();
       }
+
+      // Update progress to 0%
+      updateProgress();
+
+      // Scroll to top
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      console.log('Survey reset completed');
     }
 
     // Initialize the survey
