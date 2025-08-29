@@ -312,6 +312,8 @@
         {
             "title": "Participant Information",
             "description": "Help us understand your background (all fields are optional).",
+            "hideSurveyHeader": true,
+            "excludeFromProgress": true,
             "questions": [
                 {
                     "text": "Email address",
@@ -323,7 +325,6 @@
                 },
                 {
                     "text": "LinkedIn profile URL",
-                    "type": "participant-info",
                     "input": {
                         "type": "url"
                     },
@@ -332,7 +333,6 @@
                 },
                 {
                     "text": "Department",
-                    "type": "participant-info",
                     "input": {
                         "type": "select",
                         "options": [
@@ -352,7 +352,6 @@
                 },
                 {
                     "text": "Company website",
-                    "type": "participant-info",
                     "input": {
                         "type": "url",
                         "placeholder": "https://yourcompany.com"
@@ -361,7 +360,6 @@
                 },
                 {
                     "text": "Industry",
-                    "type": "participant-info",
                     "input": {
                         "type": "select",
                         "options": [

@@ -799,6 +799,11 @@
       let completedQuestions = 0;
 
       surveyData.sections.forEach((section, sectionIndex) => {
+        // Skip sections that are excluded from progress
+        if (section.excludeFromProgress === true) {
+          return;
+        }
+
         section.questions.forEach((question, questionIndex) => {
           totalQuestions++;
           const questionKey = `${sectionIndex}_${questionIndex}`;
@@ -856,6 +861,15 @@
           section.classList.remove('active');
         }
       });
+
+      // Hide/show survey header based on current section's flag
+      const titleCard = document.querySelector('.title-card');
+      const currentSection = surveyData.sections[currentSectionIndex];
+      if (currentSection && currentSection.hideSurveyHeader === true) {
+        titleCard.style.display = 'none';
+      } else {
+        titleCard.style.display = 'block';
+      }
     }
 
     // Navigate between sections
