@@ -42,6 +42,15 @@
       cursor: not-allowed;
     }
 
+    .time-estimate {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 14px;
+      color: #666;
+      font-weight: 600;
+    }
+
     @keyframes spin {
       to {
         transform: rotate(360deg);
@@ -54,6 +63,7 @@
   <div class="progress-bar-container">
     <div class="progress-bottom">
       <div class="progress-text" id="progress-text">0%</div>
+      <div class="time-estimate" id="time-estimate">5min to complete</div>
       <button class="reset-btn" id="reset-btn" onclick="resetSurvey()">Reset Survey</button>
     </div>
     <div class="progress-bar">
@@ -1013,6 +1023,19 @@
       document.getElementById('progress-fill').style.width = percentage + '%';
       document.getElementById('progress-text').textContent = percentage + '%';
 
+      // Update time estimation
+      const remainingPercentage = 100 - percentage;
+      const estimatedMinutes = Math.ceil((remainingPercentage / 100) * 5);
+      const timeEstimateElement = document.getElementById('time-estimate');
+      
+      if (percentage === 100) {
+        timeEstimateElement.textContent = 'Complete!';
+      } else if (estimatedMinutes <= 1) {
+        timeEstimateElement.textContent = '<1min to finish';
+      } else {
+        timeEstimateElement.textContent = `${estimatedMinutes}min to finish`;
+      }
+
       // Save state whenever progress is updated
       saveState();
     }
@@ -1265,6 +1288,11 @@
     loadSurveyConfig();
 
     // Update padding on window resize
+    window.addEventListener('resize', updateBodyPadding);
+  </script>
+</body>
+
+</html>
     window.addEventListener('resize', updateBodyPadding);
   </script>
 </body>
