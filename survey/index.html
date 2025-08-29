@@ -5,6 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Survey Application</title>
+  <!-- Add Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     * {
       margin: 0;
@@ -355,6 +357,76 @@
       color: #666;
     }
 
+    .success-view {
+      display: none;
+      max-width: 600px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      padding: 40px 30px;
+      text-align: center;
+    }
+
+    .success-view.active {
+      display: block;
+    }
+
+    .success-icon {
+      font-size: 64px;
+      color: #4caf50;
+      margin-bottom: 20px;
+    }
+
+    .success-title {
+      font-size: 28px;
+      font-weight: 500;
+      color: #333;
+      margin-bottom: 16px;
+    }
+
+    .success-message {
+      font-size: 16px;
+      line-height: 1.6;
+      color: #666;
+      margin-bottom: 30px;
+    }
+
+    .success-actions {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .success-btn {
+      background: #673ab7;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .success-btn:hover {
+      background: #5e35b1;
+    }
+
+    .success-btn.secondary {
+      background: transparent;
+      color: #673ab7;
+      border: 1px solid #673ab7;
+    }
+
+    .success-btn.secondary:hover {
+      background: #f3e5f5;
+    }
+
     @media (max-width: 600px) {
       body {
         padding: 10px;
@@ -434,6 +506,26 @@
       .navigation {
         padding: 15px 20px;
       }
+
+      .success-view {
+        padding: 30px 20px;
+      }
+
+      .success-icon {
+        font-size: 48px;
+      }
+
+      .success-title {
+        font-size: 24px;
+      }
+
+      .success-message {
+        font-size: 14px;
+      }
+
+      .success-actions {
+        flex-direction: column;
+      }
     }
 
     @media (max-width: 480px) {
@@ -495,20 +587,143 @@
   </div>
 
   <div class="container">
+    <div id="success-view" class="success-view">
+      <div class="success-icon">✓</div>
+      <h2 class="success-title">Thank You!</h2>
+      <p class="success-message">
+        Your survey responses have been successfully submitted. We appreciate your valuable feedback and the time you
+        took to complete this survey.
+      </p>
+      <div class="success-actions">
+        <button class="success-btn secondary" onclick="startNewSurvey()">Take Survey Again</button>
+        <button class="success-btn" onclick="viewResponses()">View My Responses</button>
+      </div>
+    </div>
+
     <form id="survey-form">
       <!-- Sections will be populated here -->
     </form>
   </div>
 
+  <script src="supabase-utils.js"></script>
   <script>
     let surveyData = null;
     let responses = {};
     let currentSectionIndex = 0;
     let completedSections = new Set(); // Track which sections have been completed
     let interactedQuestions = new Set(); // Track which questions have been interacted with
+    let isReadOnlyMode = false; // Track if we're in read-only mode
 
-    // Local storage key for survey state
+    // Local storage keys
     const STORAGE_KEY = 'survey_state';
+    const SUBMITTED_KEY = 'survey_submitted';
+
+    // Submission flag management
+    function setSurveySubmitted() {
+      try {
+        localStorage.setItem(SUBMITTED_KEY, 'true');
+      } catch (error) {
+        console.warn('Failed to set submission flag:', error);
+      }
+    }
+
+    function isSurveySubmitted() {
+      try {
+        return localStorage.getItem(SUBMITTED_KEY) === 'true';
+      } catch (error) {
+        console.warn('Failed to check submission flag:', error);
+        return false;
+      }
+    }
+
+    function clearSubmissionFlag() {
+      try {
+        localStorage.removeItem(SUBMITTED_KEY);
+      } catch (error) {
+        console.warn('Failed to clear submission flag:', error);
+      }
+    }
+
+    // Show success view
+    function showSuccessView() {
+      document.getElementById('success-view').classList.add('active');
+      document.getElementById('survey-form').style.display = 'none';
+
+      // Update progress to 100%
+      document.getElementById('progress-fill').style.width = '100%';
+      document.getElementById('progress-text').textContent = '100%';
+    }
+
+    // Hide success view
+    function hideSuccessView() {
+      document.getElementById('success-view').classList.remove('active');
+      document.getElementById('survey-form').style.display = 'block';
+    }
+
+    // Start new survey
+    function startNewSurvey() {
+      if (confirm('Are you sure you want to start a new survey? This will clear your previous responses.')) {
+        // Clear all data
+        responses = {};
+        completedSections.clear();
+        interactedQuestions.clear();
+        clearState();
+        clearSubmissionFlag();
+
+        // Reset to first section
+        currentSectionIndex = 0;
+
+        // Hide success view and show survey
+        hideSuccessView();
+
+        // Re-render the survey
+        renderSurvey();
+
+        // Update progress to 0%
+        updateProgress();
+
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    // View responses function - now shows actual survey in read-only mode
+    function viewResponses() {
+      const savedQuestions = loadState();
+      if (savedQuestions.length > 0) {
+        // Enter read-only mode
+        isReadOnlyMode = true;
+
+        // Hide success view and show survey
+        hideSuccessView();
+
+        // Load the saved responses
+        restoreSurveyState(savedQuestions);
+
+        // Re-render the survey in read-only mode
+        renderSurvey();
+        restoreSliderValues();
+
+        // Show all sections with responses (navigate to first section)
+        currentSectionIndex = 0;
+        showCurrentSection();
+
+        // Update progress to 100%
+        document.getElementById('progress-fill').style.width = '100%';
+        document.getElementById('progress-text').textContent = '100%';
+
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        alert('No saved responses found.');
+      }
+    }
+
+    // Exit read-only mode and return to success view
+    function exitReadOnlyMode() {
+      isReadOnlyMode = false;
+      showSuccessView();
+    }
 
     // Save state to localStorage
     function saveState() {
@@ -683,6 +898,13 @@
         const response = await fetch('survey-config.json');
         surveyData = await response.json();
 
+        // Check if survey was already submitted
+        if (isSurveySubmitted()) {
+          renderSurvey(); // Still render to show title
+          showSuccessView();
+          return;
+        }
+
         // Load previously saved data
         const savedQuestions = loadState();
 
@@ -760,31 +982,76 @@
       const navigation = document.createElement('div');
       navigation.className = 'navigation';
 
-      const backBtn = document.createElement('button');
-      backBtn.type = 'button';
-      backBtn.className = 'nav-btn secondary';
-      backBtn.textContent = 'Back';
-      backBtn.disabled = sectionIndex === 0;
-      backBtn.addEventListener('click', () => navigateSection(-1));
+      if (isReadOnlyMode) {
+        // Read-only mode navigation
+        const backToSuccessBtn = document.createElement('button');
+        backToSuccessBtn.type = 'button';
+        backToSuccessBtn.className = 'nav-btn secondary';
+        backToSuccessBtn.textContent = 'Back to Summary';
+        backToSuccessBtn.addEventListener('click', exitReadOnlyMode);
 
-      const progress = document.createElement('div');
-      progress.className = 'section-progress';
-      progress.textContent = `${sectionIndex + 1} of ${surveyData.sections.length}`;
+        const progress = document.createElement('div');
+        progress.className = 'section-progress';
+        progress.textContent = `${sectionIndex + 1} of ${surveyData.sections.length} (View Only)`;
 
-      const nextBtn = document.createElement('button');
-      nextBtn.type = 'button';
-      nextBtn.className = 'nav-btn';
-      if (sectionIndex === surveyData.sections.length - 1) {
-        nextBtn.textContent = 'Submit';
-        nextBtn.addEventListener('click', submitSurvey);
+        const nextBtn = document.createElement('button');
+        nextBtn.type = 'button';
+        nextBtn.className = 'nav-btn';
+        nextBtn.disabled = sectionIndex === surveyData.sections.length - 1;
+        nextBtn.textContent = sectionIndex === surveyData.sections.length - 1 ? 'Last Section' : 'Next';
+        if (!nextBtn.disabled) {
+          nextBtn.addEventListener('click', () => navigateSection(1));
+        }
+
+        const backBtn = document.createElement('button');
+        backBtn.type = 'button';
+        backBtn.className = 'nav-btn secondary';
+        backBtn.textContent = 'Previous';
+        backBtn.disabled = sectionIndex === 0;
+        if (!backBtn.disabled) {
+          backBtn.addEventListener('click', () => navigateSection(-1));
+        }
+
+        navigation.appendChild(backToSuccessBtn);
+        navigation.appendChild(progress);
+
+        // Only show prev/next if there are multiple sections
+        if (surveyData.sections.length > 1) {
+          const navButtons = document.createElement('div');
+          navButtons.style.display = 'flex';
+          navButtons.style.gap = '8px';
+          navButtons.appendChild(backBtn);
+          navButtons.appendChild(nextBtn);
+          navigation.appendChild(navButtons);
+        }
       } else {
-        nextBtn.textContent = 'Next';
-        nextBtn.addEventListener('click', () => navigateSection(1));
-      }
+        // Normal mode navigation
+        const backBtn = document.createElement('button');
+        backBtn.type = 'button';
+        backBtn.className = 'nav-btn secondary';
+        backBtn.textContent = 'Back';
+        backBtn.disabled = sectionIndex === 0;
+        backBtn.addEventListener('click', () => navigateSection(-1));
 
-      navigation.appendChild(backBtn);
-      navigation.appendChild(progress);
-      navigation.appendChild(nextBtn);
+        const progress = document.createElement('div');
+        progress.className = 'section-progress';
+        progress.textContent = `${sectionIndex + 1} of ${surveyData.sections.length}`;
+
+        const nextBtn = document.createElement('button');
+        nextBtn.type = 'button';
+        nextBtn.className = 'nav-btn';
+        if (sectionIndex === surveyData.sections.length - 1) {
+          nextBtn.textContent = 'Submit';
+          nextBtn.addEventListener('click', submitSurvey);
+        } else {
+          nextBtn.textContent = 'Next';
+          nextBtn.addEventListener('click', () => navigateSection(1));
+        }
+
+        navigation.appendChild(backBtn);
+        navigation.appendChild(progress);
+        navigation.appendChild(nextBtn);
+      }
 
       sectionDiv.appendChild(navigation);
 
@@ -864,19 +1131,26 @@
       slider.value = middleValue;
       responses[name] = middleValue;
 
-      slider.addEventListener('input', (e) => {
-        responses[name] = parseInt(e.target.value);
-        clearValidationError(slider.closest('.question'));
+      // Disable slider if in read-only mode
+      if (isReadOnlyMode) {
+        slider.disabled = true;
+        slider.style.opacity = '0.8';
+        slider.style.cursor = 'not-allowed';
+      } else {
+        slider.addEventListener('input', (e) => {
+          responses[name] = parseInt(e.target.value);
+          clearValidationError(slider.closest('.question'));
 
-        // Mark this question as interacted and update progress
-        const questionElement = slider.closest('.question');
-        const sectionIndex = parseInt(questionElement.dataset.sectionIndex);
-        const questionIndex = parseInt(questionElement.dataset.questionIndex);
-        const questionKey = `${sectionIndex}_${questionIndex}`;
+          // Mark this question as interacted and update progress
+          const questionElement = slider.closest('.question');
+          const sectionIndex = parseInt(questionElement.dataset.sectionIndex);
+          const questionIndex = parseInt(questionElement.dataset.questionIndex);
+          const questionKey = `${sectionIndex}_${questionIndex}`;
 
-        interactedQuestions.add(questionKey);
-        updateProgress();
-      });
+          interactedQuestions.add(questionKey);
+          updateProgress();
+        });
+      }
 
       sliderContainer.appendChild(slider);
 
@@ -1026,15 +1300,18 @@
       const newIndex = currentSectionIndex + direction;
 
       if (newIndex >= 0 && newIndex < surveyData.sections.length) {
-        // Validate current section before moving forward
-        if (direction > 0 && !validateCurrentSection()) {
-          return;
-        }
+        // Skip validation in read-only mode
+        if (!isReadOnlyMode) {
+          // Validate current section before moving forward
+          if (direction > 0 && !validateCurrentSection()) {
+            return;
+          }
 
-        // Mark current section as completed when moving forward
-        if (direction > 0) {
-          completedSections.add(currentSectionIndex);
-          updateProgress();
+          // Mark current section as completed when moving forward
+          if (direction > 0) {
+            completedSections.add(currentSectionIndex);
+            updateProgress();
+          }
         }
 
         currentSectionIndex = newIndex;
@@ -1076,24 +1353,37 @@
     }
 
     // Submit survey
-    function submitSurvey() {
+    async function submitSurvey() {
       if (validateForm()) {
         // Mark the final section as completed
         completedSections.add(currentSectionIndex);
         updateProgress();
 
         console.log('Survey responses:', responses);
-        alert('Survey submitted successfully! Check the console for responses.');
 
-        // Clear saved state after successful submission
-        clearState();
+        try {
+          // Store to Supabase if configured
+          if (window.SupabaseUtils) {
+            const result = await SupabaseUtils.storeSurveyResponse(responses, surveyData);
 
-        // Here you would typically send the data to a server
-        // fetch('/submit-survey', {
-        //     method: 'POST',
-        //     headers: { 'Content-Type': 'application/json' },
-        //     body: JSON.stringify(responses)
-        // });
+            if (result.success) {
+              console.log('Stored in Supabase with session ID:', result.session_id);
+              console.log('Total responses stored:', result.response_count);
+            } else {
+              console.warn('Failed to store in Supabase:', result.error);
+            }
+          } else {
+            console.log('Supabase not configured - storing responses locally only');
+          }
+
+          // Set submission flag and show success view
+          setSurveySubmitted();
+          showSuccessView();
+
+        } catch (error) {
+          console.error('Error submitting survey:', error);
+          alert('Survey responses recorded locally. There was an issue with remote storage: ' + error.message);
+        }
       } else {
         // Scroll to first error
         const firstError = document.querySelector('.question.error');
@@ -1105,6 +1395,12 @@
 
     // Reset survey function
     function resetSurvey() {
+      // Don't allow reset in read-only mode
+      if (isReadOnlyMode) {
+        alert('Cannot reset survey while in view mode. Please return to summary first.');
+        return;
+      }
+
       if (confirm('Are you sure you want to reset the survey? This will clear all your answers.')) {
         // Clear all responses
         responses = {};
@@ -1113,7 +1409,7 @@
         completedSections.clear();
         interactedQuestions.clear();
 
-        // Clear localStorage
+        // Clear localStorage but keep submission flag
         clearState();
 
         // Reset to first section
