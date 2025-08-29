@@ -310,8 +310,8 @@
             ]
         },
         {
-            "title": "Participant Information",
-            "description": "Help us understand your background (all fields are optional).",
+            "title": "Participant Information (Optional)",
+            "description": "Optionally provide your information to help us understand your background and responses better.\nLeave your email or Linkedin to receive insights from the survey. we might also contact you for follow-interview with gift card rewards.",
             "hideSurveyHeader": true,
             "excludeFromProgress": true,
             "questions": [
