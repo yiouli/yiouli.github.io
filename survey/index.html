@@ -17,6 +17,55 @@
       background-color: #f0f0f0;
       min-height: 100vh;
       padding: 20px;
+      padding-top: 70px;
+      /* Add space for fixed progress bar */
+    }
+
+    .progress-bar-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 50px;
+      background: white;
+      border-bottom: 1px solid #e0e0e0;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+    }
+
+    .progress-bar {
+      flex: 1;
+      height: 8px;
+      background: #e0e0e0;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-right: 15px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #673ab7, #9c27b0);
+      border-radius: 4px;
+      transition: width 0.3s ease;
+      width: 0%;
+    }
+
+    .progress-text {
+      font-size: 14px;
+      font-weight: 500;
+      color: #673ab7;
+      min-width: 60px;
+      text-align: right;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: #f0f0f0;
+      min-height: 100vh;
+      padding: 20px;
     }
 
     .container {
@@ -297,6 +346,17 @@
     @media (max-width: 600px) {
       body {
         padding: 10px;
+        padding-top: 60px;
+        /* Adjust for mobile */
+      }
+
+      .progress-bar-container {
+        padding: 0 10px;
+      }
+
+      .progress-text {
+        font-size: 12px;
+        min-width: 50px;
       }
 
       .title-section {
@@ -379,6 +439,13 @@
 </head>
 
 <body>
+  <div class="progress-bar-container">
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+    <div class="progress-text" id="progress-text">0%</div>
+  </div>
+
   <div class="container">
     <div class="title-card">
       <div class="header"></div>
@@ -397,6 +464,8 @@
     let surveyData = null;
     let responses = {};
     let currentSectionIndex = 0;
+    let completedSections = new Set(); // Track which sections have been completed
+    let interactedQuestions = new Set(); // Track which questions have been interacted with
 
     // Load survey configuration
     async function loadSurveyConfig() {
@@ -574,6 +643,15 @@
       slider.addEventListener('input', (e) => {
         responses[name] = parseInt(e.target.value);
         clearValidationError(slider.closest('.question'));
+
+        // Mark this question as interacted and update progress
+        const questionElement = slider.closest('.question');
+        const sectionIndex = parseInt(questionElement.dataset.sectionIndex);
+        const questionIndex = parseInt(questionElement.dataset.questionIndex);
+        const questionKey = `${sectionIndex}_${questionIndex}`;
+
+        interactedQuestions.add(questionKey);
+        updateProgress();
       });
 
       sliderContainer.appendChild(slider);
@@ -652,6 +730,58 @@
       return isValid;
     }
 
+    // Update progress bar
+    function updateProgress() {
+      if (!surveyData) return;
+
+      let totalQuestions = 0;
+      let completedQuestions = 0;
+
+      surveyData.sections.forEach((section, sectionIndex) => {
+        section.questions.forEach((question, questionIndex) => {
+          totalQuestions++;
+          const questionKey = `${sectionIndex}_${questionIndex}`;
+
+          // A question is completed if:
+          // 1. Its section has been completed (user clicked Next), OR
+          // 2. The user has interacted with this question or any question after it
+          if (completedSections.has(sectionIndex) ||
+            hasInteractedWithQuestionOrLater(sectionIndex, questionIndex)) {
+            completedQuestions++;
+          }
+        });
+      });
+
+      const percentage = totalQuestions > 0 ? Math.round((completedQuestions / totalQuestions) * 100) : 0;
+
+      document.getElementById('progress-fill').style.width = percentage + '%';
+      document.getElementById('progress-text').textContent = percentage + '%';
+    }
+
+    // Check if user has interacted with this question or any question that comes after it
+    function hasInteractedWithQuestionOrLater(targetSectionIndex, targetQuestionIndex) {
+      if (!surveyData) return false;
+
+      for (let sectionIndex = 0; sectionIndex < surveyData.sections.length; sectionIndex++) {
+        const section = surveyData.sections[sectionIndex];
+
+        for (let questionIndex = 0; questionIndex < section.questions.length; questionIndex++) {
+          const questionKey = `${sectionIndex}_${questionIndex}`;
+
+          // If we've interacted with this question
+          if (interactedQuestions.has(questionKey)) {
+            // Check if this question comes at or after the target question
+            if (sectionIndex > targetSectionIndex ||
+              (sectionIndex === targetSectionIndex && questionIndex >= targetQuestionIndex)) {
+              return true;
+            }
+          }
+        }
+      }
+
+      return false;
+    }
+
     // Show current section
     function showCurrentSection() {
       const sections = document.querySelectorAll('.section-card');
@@ -672,6 +802,12 @@
         // Validate current section before moving forward
         if (direction > 0 && !validateCurrentSection()) {
           return;
+        }
+
+        // Mark current section as completed when moving forward
+        if (direction > 0) {
+          completedSections.add(currentSectionIndex);
+          updateProgress();
         }
 
         currentSectionIndex = newIndex;
@@ -715,6 +851,10 @@
     // Submit survey
     function submitSurvey() {
       if (validateForm()) {
+        // Mark the final section as completed
+        completedSections.add(currentSectionIndex);
+        updateProgress();
+
         console.log('Survey responses:', responses);
         alert('Survey submitted successfully! Check the console for responses.');
 
@@ -737,9 +877,5 @@
     loadSurveyConfig();
   </script>
 </body>
-
-</html>
-
-</html>
 
 </html>
