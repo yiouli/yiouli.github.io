@@ -17,7 +17,7 @@
       background-color: #f0f0f0;
       min-height: 100vh;
       padding: 20px;
-      padding-top: 200px;
+      padding-top: 220px;
       /* Increased to accommodate both progress bar and title card */
     }
 
@@ -26,21 +26,19 @@
       top: 0;
       left: 0;
       right: 0;
-      height: 50px;
+      height: 70px;
       background: white;
       z-index: 1000;
-      display: flex;
-      align-items: center;
-      padding: 0 20px;
+      padding: 15px 20px 10px 20px;
     }
 
     .progress-bar {
-      flex: 1;
+      width: 100%;
       height: 8px;
       background: #e0e0e0;
       border-radius: 4px;
       overflow: hidden;
-      margin-right: 15px;
+      margin-bottom: 8px;
     }
 
     .progress-fill {
@@ -51,22 +49,37 @@
       width: 0%;
     }
 
+    .progress-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
     .progress-text {
       font-size: 14px;
       font-weight: 500;
       color: #673ab7;
-      min-width: 60px;
-      text-align: right;
     }
 
-    .container {
-      max-width: 700px;
-      margin: 0 auto;
+    .reset-btn {
+      background: transparent;
+      color: #666;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .reset-btn:hover {
+      background: #f5f5f5;
     }
 
     .title-card {
       position: fixed;
-      top: 50px;
+      top: 70px;
       /* Position below progress bar */
       left: 0;
       right: 0;
@@ -345,17 +358,26 @@
     @media (max-width: 600px) {
       body {
         padding: 10px;
-        padding-top: 180px;
+        padding-top: 200px;
         /* Adjusted for mobile sticky header */
       }
 
       .progress-bar-container {
-        padding: 0 10px;
+        padding: 10px;
+        height: 60px;
       }
 
       .progress-text {
         font-size: 12px;
-        min-width: 50px;
+      }
+
+      .reset-btn {
+        padding: 4px 8px;
+        font-size: 11px;
+      }
+
+      .title-card {
+        top: 60px;
       }
 
       .title-section {
@@ -416,8 +438,12 @@
 
     @media (max-width: 480px) {
       body {
-        padding-top: 160px;
+        padding-top: 180px;
         /* Further adjusted for smaller screens */
+      }
+
+      .title-card {
+        top: 60px;
       }
 
       .scale-start-label,
@@ -452,10 +478,13 @@
 
 <body>
   <div class="progress-bar-container">
+    <div class="progress-bottom">
+      <div class="progress-text" id="progress-text">0%</div>
+      <button class="reset-btn" id="reset-btn" onclick="resetSurvey()">Reset Survey</button>
+    </div>
     <div class="progress-bar">
       <div class="progress-fill" id="progress-fill"></div>
     </div>
-    <div class="progress-text" id="progress-text">0%</div>
   </div>
 
   <div class="title-card">
@@ -1074,12 +1103,36 @@
       }
     }
 
+    // Reset survey function
+    function resetSurvey() {
+      if (confirm('Are you sure you want to reset the survey? This will clear all your answers.')) {
+        // Clear all responses
+        responses = {};
+
+        // Clear tracking sets
+        completedSections.clear();
+        interactedQuestions.clear();
+
+        // Clear localStorage
+        clearState();
+
+        // Reset to first section
+        currentSectionIndex = 0;
+
+        // Re-render the survey
+        renderSurvey();
+
+        // Update progress to 0%
+        updateProgress();
+
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
     // Initialize the survey
     loadSurveyConfig();
   </script>
-</body>
-
-</html>
 </body>
 
 </html>
