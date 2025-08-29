@@ -1,6 +1,6 @@
 {
     "title": "What would make \"managing people\" better?",
-    "description": "For the list of objectives below, please rate how important each is to making \"managing people\" better, and how satisfied you are with its state in your current job.\n\nThe survey should take ~5 minutes to complete.",
+    "description": "We want to understand what improvements would make the biggest difference in your experience managing people.\n\nFor each objective below, please rate:\n• How important it is for improving people management\n• How satisfied you are with it in your current role\n\nThis survey takes about 5 minutes to complete.",
     "sections": [
         {
             "title": "Set Performance Expectations",
@@ -10,63 +10,63 @@
                     "input": {
                         "type": "impSatScales"
                     },
-                    "text": "reduce the effort required to determine performance expectations"
+                    "text": "make it easier to determine performance expectations"
                 },
                 {
                     "required": true,
                     "input": {
                         "type": "impSatScales"
                     },
-                    "text": "increase agree-ability of performance expectations"
+                    "text": "make performance expectations more agreeable"
                 },
                 {
                     "required": true,
                     "input": {
                         "type": "impSatScales"
                     },
-                    "text": "reduce the effort required to communicate performance expectations"
+                    "text": "make it easier to communicate performance expectations"
                 },
                 {
                     "required": true,
                     "input": {
                         "type": "impSatScales"
                     },
-                    "text": "minimize the possibility of misunderstanding of performance expectations"
+                    "text": "prevent misunderstanding of performance expectations"
                 },
                 {
                     "required": true,
                     "input": {
                         "type": "impSatScales"
                     },
-                    "text": "reduce the effort required to understand employee's alignment on expectations"
+                    "text": "make it easier to understand employee's alignment on expectations"
                 },
                 {
                     "required": true,
                     "input": {
                         "type": "impSatScales"
                     },
-                    "text": "reduce the possibility of misunderstanding employee's alignment on expectations"
+                    "text": "prevent misunderstanding employee's alignment on expectations"
                 },
                 {
                     "required": true,
                     "input": {
                         "type": "impSatScales"
                     },
-                    "text": "shorten the time to adjust performance expectations"
+                    "text": "adjust performance expectations faster"
                 },
                 {
                     "required": true,
                     "input": {
                         "type": "impSatScales"
                     },
-                    "text": "reduce the effort required to adjust performance expectations"
+                    "text": "make it easier to adjust performance expectations"
                 },
                 {
                     "required": true,
                     "input": {
                         "type": "impSatScales"
                     },
-                    "text": "reduce the effort required to gather signals on performance"
+                    "text": "make it easier to gather performance signals"
                 }
             ]
         },
@@ -78,91 +78,91 @@
                     "input": {
                         "type": "impSatScales"
                     },
-                    "text": "increase the quality of signals on performance"
+                    "text": "improve quality of performance signals"
                 },
                 {
                     "required": true,
                     "input": {
                         "type": "impSatScales"
                     },
-                    "text": "increase the amount of signals on performance"
+                    "text": "get more performance signals"
                 },
                 {
                     "required": true,
                     "input": {
                         "type": "impSatScales"
                     },
-                    "text": "reduce the effort required to interpret performance signals"
+                    "text": "make it easier to interpret performance signals"
                 },
                 {
                     "required": true,
                     "input": {
                         "type": "impSatScales"
                     },
-                    "text": "reduce the change to misinterpret performance signals"
+                    "text": "prevent misinterpreting performance signals"
                 },
                 {
                     "required": true,
                     "input": {
                         "type": "impSatScales"
                     },
-                    "text": "reduce the effort required to identify performance gaps"
+                    "text": "make it easier to identify performance gaps"
                 },
                 {
                     "required": true,
                     "input": {
                         "type": "impSatScales"
                     },
-                    "text": "reduce the time delay to identify performance gaps"
+                    "text": "identify performance gaps faster"
                 },
                 {
                     "required": true,
                     "input": {
                         "type": "impSatScales"
                     },
-                    "text": "reduce the chance of missing performance gaps"
+                    "text": "avoid missing performance gaps"
                 },
                 {
                     "required": true,
                     "input": {
                         "type": "impSatScales"
                     },
-                    "text": "reduce the change of wrongly identify non-existent performance gaps"
+                    "text": "avoid false performance gap alerts"
                 },
                 {
                     "required": true,
                     "input": {
                         "type": "impSatScales"
                     },
-                    "text": "reduce the effort required to identify good performance"
+                    "text": "make it easier to identify good performance"
                 },
                 {
                     "required": true,
                     "input": {
                         "type": "impSatScales"
                     },
-                    "text": "reduce the time delay to identify good performance"
+                    "text": "identify good performance faster"
                 },
                 {
                     "required": true,
                     "input": {
                         "type": "impSatScales"
                     },
-                    "text": "reduce the chance of missing good performance"
+                    "text": "avoid missing good performance"
                 },
                 {
                     "required": true,
                     "input": {
                         "type": "impSatScales"
                     },
-                    "text": "reduce the change of wrongly identify good performance"
+                    "text": "avoid false good performance alerts"
                 },
                 {
                     "required": true,
                     "input": {
                         "type": "impSatScales"
                     },
-                    "text": "reduce the effort required to form constructive feedback"
+                    "text": "make it easier to create constructive feedback"
                 }
             ]
         },
@@ -174,77 +174,77 @@
                     "input": {
                         "type": "impSatScales"
                     },
-                    "text": "increase the quality of constructive feedback"
+                    "text": "improve quality of constructive feedback"
                 },
                 {
                     "required": true,
                     "input": {
                         "type": "impSatScales"
                     },
-                    "text": "increase the frequency of giving constructive feedback"
+                    "text": "give constructive feedback more often"
                 },
                 {
                     "required": true,
                     "input": {
                         "type": "impSatScales"
                     },
-                    "text": "reduce the difficulty to deliver constructive feedback"
+                    "text": "make it easier to deliver constructive feedback"
                 },
                 {
                     "required": true,
                     "input": {
                         "type": "impSatScales"
                     },
-                    "text": "reduce the effort required to understand reception of constructive feedback"
+                    "text": "make it easier to understand how constructive feedback was received"
                 },
                 {
                     "required": true,
                     "input": {
                         "type": "impSatScales"
                     },
-                    "text": "reduce the time-delay to understand reception of constructive feedback"
+                    "text": "understand faster how constructive feedback was received"
                 },
                 {
                     "required": true,
                     "input": {
                         "type": "impSatScales"
                     },
-                    "text": "reduce the effort required to form reinforcing feedback"
+                    "text": "make it easier to create positive feedback"
                 },
                 {
                     "required": true,
                     "input": {
                         "type": "impSatScales"
                     },
-                    "text": "increase the quality of reinforcing feedback"
+                    "text": "improve quality of positive feedback"
                 },
                 {
                     "required": true,
                     "input": {
                         "type": "impSatScales"
                     },
-                    "text": "increase the frequency of giving reinforcing feedback"
+                    "text": "give positive feedback more often"
                 },
                 {
                     "required": true,
                     "input": {
                         "type": "impSatScales"
                     },
-                    "text": "reduce the difficulty to deliver reinforcing feedback"
+                    "text": "make it easier to deliver positive feedback"
                 },
                 {
                     "required": true,
                     "input": {
                         "type": "impSatScales"
                     },
-                    "text": "reduce the effort required to understand reception of reinforcing feedback"
+                    "text": "make it easier to understand how positive feedback was received"
                 },
                 {
                     "required": true,
                     "input": {
                         "type": "impSatScales"
                     },
-                    "text": "reduce the time-delay to understand reception of reinforcing feedback"
+                    "text": "understand faster how positive feedback was received"
                 }
             ]
         },
@@ -256,7 +256,7 @@
                     "input": {
                         "type": "impSatScales"
                     },
-                    "text": "reduce the effort required to determine performance ratings"
+                    "text": "make it easier to determine performance ratings"
                 },
                 {
                     "required": true,
@@ -270,7 +270,7 @@
                     "input": {
                         "type": "impSatScales"
                     },
-                    "text": "improve the defensibility of performance ratings"
+                    "text": "make performance ratings more defensible"
                 },
                 {
                     "required": true,
@@ -284,14 +284,14 @@
                     "input": {
                         "type": "impSatScales"
                     },
-                    "text": "reduce conflicts arising from performance ratings"
+                    "text": "reduce conflicts from performance ratings"
                 },
                 {
                     "required": true,
                     "input": {
                         "type": "impSatScales"
                     },
-                    "text": "reduce the effort required to determine promotion readiness"
+                    "text": "make it easier to determine promotion readiness"
                 },
                 {
                     "required": true,
@@ -305,7 +305,7 @@
                     "input": {
                         "type": "impSatScales"
                     },
-                    "text": "improve the defensibility of promotion decisions"
+                    "text": "make promotion decisions more defensible"
                 }
             ]
         },
@@ -324,7 +324,7 @@
         },
         {
             "title": "Participant Information (Optional)",
-            "description": "Share information about your job to help us understand responses better. \n\nLeave your email and/or LinkedIn to receive survey insights.\nWe might reach out for follow-up interviews with gift card reward.",
+            "description": "Share information about your job to help us understand responses better.\n\nLeave your email and/or LinkedIn to receive survey insights.\nWe might reach out for follow-up interviews with gift card rewards.",
             "hideSurveyHeader": true,
             "excludeFromProgress": true,
             "questions": [
@@ -349,7 +349,7 @@
                     "required": false
                 },
                 {
-                    "text": "What best describe your company's type?",
+                    "text": "What best describes your company's type?",
                     "input": {
                         "type": "select",
                         "options": [
@@ -359,7 +359,8 @@
                             "Non-profit",
                             "Government"
                         ]
-                    }
+                    },
+                    "required": false
                 },
                 {
                     "text": "What is the size of your company?",
