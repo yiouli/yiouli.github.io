@@ -324,7 +324,7 @@
         },
         {
             "title": "Participant Information (Optional)",
-            "description": "Optionally provide your information to help us understand your background and responses better.\nLeave your email or Linkedin to receive insights from the survey. we might also contact you for follow-interview with gift card rewards.",
+            "description": "Share information about your job to help us understand responses better. \n\nLeave your email and/or LinkedIn to receive survey insights.\nWe might reach out for follow-up interviews with gift card reward.",
             "hideSurveyHeader": true,
             "excludeFromProgress": true,
             "questions": [

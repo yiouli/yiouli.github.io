@@ -531,7 +531,8 @@
         if (section.description) {
           const descDiv = document.createElement('div');
           descDiv.className = 'section-description';
-          descDiv.textContent = section.description;
+          // Convert \n to <br> tags for proper line breaks
+          descDiv.innerHTML = section.description.replace(/\n/g, '<br>');
           headerDiv.appendChild(descDiv);
         }
 
