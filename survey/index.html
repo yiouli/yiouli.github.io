@@ -8,6 +8,46 @@
   <!-- Add Supabase CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Loading state styles */
+    .nav-btn.loading {
+      position: relative;
+      color: transparent;
+      pointer-events: none;
+    }
+
+    .nav-btn.loading::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      top: 50%;
+      left: 50%;
+      margin-left: -8px;
+      margin-top: -8px;
+      border: 2px solid #ffffff;
+      border-radius: 50%;
+      border-top-color: transparent;
+      animation: spin 1s linear infinite;
+    }
+
+    .form-disabled {
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
+    .form-disabled .scale-slider,
+    .form-disabled .text-input,
+    .form-disabled .select-input {
+      cursor: not-allowed;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -54,6 +94,7 @@
     let completedSections = new Set(); // Track which sections have been completed
     let interactedQuestions = new Set(); // Track which questions have been interacted with
     let isReadOnlyMode = false; // Track if we're in read-only mode
+    let isSubmitting = false; // Track if form is being submitted
 
     // Local storage keys
     const STORAGE_KEY = 'survey_state';
@@ -555,7 +596,11 @@
         backBtn.className = 'nav-btn secondary';
         backBtn.textContent = 'Back';
         backBtn.disabled = sectionIndex === 0;
-        backBtn.addEventListener('click', () => navigateSection(-1));
+        backBtn.addEventListener('click', () => {
+          if (!isSubmitting) {
+            navigateSection(-1);
+          }
+        });
 
         const progress = document.createElement('div');
         progress.className = 'section-progress';
@@ -566,10 +611,18 @@
         nextBtn.className = 'nav-btn';
         if (sectionIndex === surveyData.sections.length - 1) {
           nextBtn.textContent = 'Submit';
-          nextBtn.addEventListener('click', submitSurvey);
+          nextBtn.addEventListener('click', () => {
+            if (!isSubmitting) {
+              submitSurvey();
+            }
+          });
         } else {
           nextBtn.textContent = 'Next';
-          nextBtn.addEventListener('click', () => navigateSection(1));
+          nextBtn.addEventListener('click', () => {
+            if (!isSubmitting) {
+              navigateSection(1);
+            }
+          });
         }
 
         navigation.appendChild(backBtn);
@@ -1015,9 +1068,39 @@
       return isValid;
     }
 
+    // Disable/enable form interactions
+    function setFormInteractionState(disabled) {
+      const surveyForm = document.getElementById('survey-form');
+      const container = document.querySelector('.container');
+
+      if (disabled) {
+        surveyForm.classList.add('form-disabled');
+        container.style.pointerEvents = 'none';
+        isSubmitting = true;
+      } else {
+        surveyForm.classList.remove('form-disabled');
+        container.style.pointerEvents = '';
+        isSubmitting = false;
+      }
+    }
+
     // Submit survey
     async function submitSurvey() {
+      if (isSubmitting) {
+        return; // Prevent double submission
+      }
+
       if (validateForm()) {
+        // Disable form interactions and show loading state
+        setFormInteractionState(true);
+
+        // Find and update submit button
+        const submitBtn = document.querySelector('.section-card.active .nav-btn:not(.secondary)');
+        if (submitBtn) {
+          submitBtn.classList.add('loading');
+          submitBtn.disabled = true;
+        }
+
         // Mark the final section as completed
         completedSections.add(currentSectionIndex);
         updateProgress();
@@ -1043,8 +1126,20 @@
           setSurveySubmitted();
           showSuccessView();
 
+          // Keep form disabled since we're showing success view
+
         } catch (error) {
           console.error('Error submitting survey:', error);
+
+          // Re-enable form interactions on error
+          setFormInteractionState(false);
+
+          // Remove loading state from submit button
+          if (submitBtn) {
+            submitBtn.classList.remove('loading');
+            submitBtn.disabled = false;
+          }
+
           alert('Survey responses recorded locally. There was an issue with remote storage: ' + error.message);
         }
       } else {
@@ -1058,6 +1153,9 @@
 
     // Reset survey function
     function resetSurvey() {
+      // Re-enable form interactions in case they were disabled
+      setFormInteractionState(false);
+
       responses = {};
 
       // Clear tracking sets
