@@ -513,26 +513,148 @@
       questionText.innerHTML = capitalizedText + (question.required ? '<span class="required">*</span>' : '');
       questionDiv.appendChild(questionText);
 
-      const scalesContainer = document.createElement('div');
-      scalesContainer.className = 'scales-container';
+      // Create input based on question type
+      const inputType = question.input?.type || 'impSatScales'; // Default to importance/satisfaction scales
 
-      // Importance scale (1-5)
-      const importanceScale = createScale('Importance', 5,
-        ['Not Important', 'Very Important'],
-        `importance_${sectionIndex}_${questionIndex}`
-      );
-      scalesContainer.appendChild(importanceScale);
+      if (inputType === 'impSatScales') {
+        const scalesContainer = document.createElement('div');
+        scalesContainer.className = 'scales-container';
 
-      // Satisfaction scale (1-7)
-      const satisfactionScale = createScale('Satisfaction', 7,
-        ['Very Unsatisfied', 'Very Satisfied'],
-        `satisfaction_${sectionIndex}_${questionIndex}`
-      );
-      scalesContainer.appendChild(satisfactionScale);
+        // Importance scale (1-5)
+        const importanceScale = createScale('Importance', 5,
+          ['Not Important', 'Very Important'],
+          `importance_${sectionIndex}_${questionIndex}`
+        );
+        scalesContainer.appendChild(importanceScale);
 
-      questionDiv.appendChild(scalesContainer);
+        // Satisfaction scale (1-7)
+        const satisfactionScale = createScale('Satisfaction', 7,
+          ['Very Unsatisfied', 'Very Satisfied'],
+          `satisfaction_${sectionIndex}_${questionIndex}`
+        );
+        scalesContainer.appendChild(satisfactionScale);
+
+        questionDiv.appendChild(scalesContainer);
+      } else if (inputType === 'email' || inputType === 'url') {
+        const inputContainer = document.createElement('div');
+        inputContainer.className = 'input-container';
+
+        const input = document.createElement('input');
+        input.type = inputType;
+        input.name = `${sectionIndex}_${questionIndex}`;
+        input.className = 'text-input';
+
+        if (question.placeholder) {
+          input.placeholder = question.placeholder;
+        }
+
+        if (isReadOnlyMode) {
+          input.disabled = true;
+          input.style.opacity = '0.8';
+          input.style.cursor = 'not-allowed';
+        } else {
+          input.addEventListener('input', (e) => {
+            const questionKey = `${sectionIndex}_${questionIndex}`;
+            responses[questionKey] = e.target.value;
+            interactedQuestions.add(questionKey);
+            console.log('interacted with ' + questionKey);
+            updateProgress();
+            clearValidationError(questionDiv);
+          });
+        }
+
+        inputContainer.appendChild(input);
+        questionDiv.appendChild(inputContainer);
+      } else if (inputType === 'select') {
+        const inputContainer = document.createElement('div');
+        inputContainer.className = 'input-container';
+
+        const select = document.createElement('select');
+        select.name = `${sectionIndex}_${questionIndex}`;
+        select.className = 'select-input';
+
+        // Add default option
+        const defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = 'Please select...';
+        defaultOption.disabled = true;
+        defaultOption.selected = true;
+        select.appendChild(defaultOption);
+
+        // Add options from configuration
+        if (question.input.options) {
+          question.input.options.forEach(optionText => {
+            const option = document.createElement('option');
+            option.value = optionText;
+            option.textContent = optionText;
+            select.appendChild(option);
+          });
+
+          // Add "Other" option if allowOther is true
+          if (question.input.allowOther) {
+            const otherOption = document.createElement('option');
+            otherOption.value = 'other';
+            otherOption.textContent = 'Other';
+            select.appendChild(otherOption);
+          }
+        }
+
+        if (isReadOnlyMode) {
+          select.disabled = true;
+          select.style.opacity = '0.8';
+          select.style.cursor = 'not-allowed';
+        } else {
+          select.addEventListener('change', (e) => {
+            const questionKey = `${sectionIndex}_${questionIndex}`;
+            responses[questionKey] = e.target.value;
+            interactedQuestions.add(questionKey);
+            updateProgress();
+            clearValidationError(questionDiv);
+
+            // Handle "Other" option
+            if (e.target.value === 'other' && question.input.allowOther) {
+              showOtherInput(inputContainer, select, sectionIndex, questionIndex);
+            } else {
+              hideOtherInput(inputContainer);
+            }
+          });
+        }
+
+        inputContainer.appendChild(select);
+        questionDiv.appendChild(inputContainer);
+      }
 
       return questionDiv;
+    }
+
+    // Helper function to show "Other" input field
+    function showOtherInput(container, select, sectionIndex, questionIndex) {
+      // Remove existing other input if any
+      hideOtherInput(container);
+
+      const otherInput = document.createElement('input');
+      otherInput.type = 'text';
+      otherInput.className = 'text-input other-input';
+      otherInput.placeholder = 'Please specify...';
+      otherInput.style.marginTop = '8px';
+
+      otherInput.addEventListener('input', (e) => {
+        const questionKey = `${sectionIndex}_${questionIndex}`;
+        responses[questionKey] = e.target.value;
+        interactedQuestions.add(questionKey);
+        updateProgress();
+      });
+
+      container.appendChild(otherInput);
+      otherInput.focus();
+    }
+
+    // Helper function to hide "Other" input field
+    function hideOtherInput(container) {
+      const existingOtherInput = container.querySelector('.other-input');
+      if (existingOtherInput) {
+        existingOtherInput.remove();
+      }
     }
 
     // Create a scale element

@@ -7,38 +7,65 @@
             "questions": [
                 {
                     "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
                     "text": "reduce the effort required to determine performance expectations"
                 },
                 {
                     "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
                     "text": "increase agree-ability of performance expectations"
                 },
                 {
                     "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
                     "text": "reduce the effort required to communicate performance expectations"
                 },
                 {
                     "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
                     "text": "minimize the possibility of misunderstanding of performance expectations"
                 },
                 {
                     "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
                     "text": "reduce the effort required to understand employee's alignment on expectations"
                 },
                 {
                     "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
                     "text": "reduce the possibility of misunderstanding employee's alignment on expectations"
                 },
                 {
                     "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
                     "text": "shorten the time to adjust performance expectations"
                 },
                 {
                     "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
                     "text": "reduce the effort required to adjust performance expectations"
                 },
                 {
                     "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
                     "text": "reduce the effort required to gather signals on performance"
                 }
             ]
@@ -48,54 +75,93 @@
             "questions": [
                 {
                     "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
                     "text": "increase the quality of signals on performance"
                 },
                 {
                     "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
                     "text": "increase the amount of signals on performance"
                 },
                 {
                     "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
                     "text": "reduce the effort required to interpret performance signals"
                 },
                 {
                     "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
                     "text": "reduce the change to misinterpret performance signals"
                 },
                 {
                     "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
                     "text": "reduce the effort required to identify performance gaps"
                 },
                 {
                     "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
                     "text": "reduce the time delay to identify performance gaps"
                 },
                 {
                     "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
                     "text": "reduce the chance of missing performance gaps"
                 },
                 {
                     "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
                     "text": "reduce the change of wrongly identify non-existent performance gaps"
                 },
                 {
                     "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
                     "text": "reduce the effort required to identify good performance"
                 },
                 {
                     "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
                     "text": "reduce the time delay to identify good performance"
                 },
                 {
                     "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
                     "text": "reduce the chance of missing good performance"
                 },
                 {
                     "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
                     "text": "reduce the change of wrongly identify good performance"
                 },
                 {
                     "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
                     "text": "reduce the effort required to form constructive feedback"
                 }
             ]
@@ -105,46 +171,79 @@
             "questions": [
                 {
                     "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
                     "text": "increase the quality of constructive feedback"
                 },
                 {
                     "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
                     "text": "increase the frequency of giving constructive feedback"
                 },
                 {
                     "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
                     "text": "reduce the difficulty to deliver constructive feedback"
                 },
                 {
                     "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
                     "text": "reduce the effort required to understand reception of constructive feedback"
                 },
                 {
                     "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
                     "text": "reduce the time-delay to understand reception of constructive feedback"
                 },
                 {
                     "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
                     "text": "reduce the effort required to form reinforcing feedback"
                 },
                 {
                     "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
                     "text": "increase the quality of reinforcing feedback"
                 },
                 {
                     "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
                     "text": "increase the frequency of giving reinforcing feedback"
                 },
                 {
                     "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
                     "text": "reduce the difficulty to deliver reinforcing feedback"
                 },
                 {
                     "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
                     "text": "reduce the effort required to understand reception of reinforcing feedback"
                 },
                 {
                     "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
                     "text": "reduce the time-delay to understand reception of reinforcing feedback"
                 }
             ]
@@ -154,35 +253,146 @@
             "questions": [
                 {
                     "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
                     "text": "reduce the effort required to determine performance ratings"
                 },
                 {
                     "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
                     "text": "reduce bias in performance ratings"
                 },
                 {
                     "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
                     "text": "improve the defensibility of performance ratings"
                 },
                 {
                     "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
                     "text": "increase employee acceptance of performance ratings"
                 },
                 {
                     "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
                     "text": "reduce conflicts arising from performance ratings"
                 },
                 {
                     "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
                     "text": "reduce the effort required to determine promotion readiness"
                 },
                 {
                     "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
                     "text": "reduce bias in promotion decisions"
                 },
                 {
                     "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
                     "text": "improve the defensibility of promotion decisions"
+                }
+            ]
+        },
+        {
+            "title": "Participant Information",
+            "description": "Help us understand your background (all fields are optional).",
+            "questions": [
+                {
+                    "text": "Email address",
+                    "input": {
+                        "type": "email"
+                    },
+                    "placeholder": "your.email@company.com",
+                    "required": false
+                },
+                {
+                    "text": "LinkedIn profile URL",
+                    "type": "participant-info",
+                    "input": {
+                        "type": "url"
+                    },
+                    "placeholder": "https://linkedin.com/in/yourprofile",
+                    "required": false
+                },
+                {
+                    "text": "Department",
+                    "type": "participant-info",
+                    "input": {
+                        "type": "select",
+                        "options": [
+                            "Engineering",
+                            "Sales",
+                            "Marketing",
+                            "Operations",
+                            "Human Resources",
+                            "Finance",
+                            "Customer Success",
+                            "Product Management",
+                            "Design"
+                        ],
+                        "allowOther": true
+                    },
+                    "required": false
+                },
+                {
+                    "text": "Company website",
+                    "type": "participant-info",
+                    "input": {
+                        "type": "url",
+                        "placeholder": "https://yourcompany.com"
+                    },
+                    "required": false
+                },
+                {
+                    "text": "Industry",
+                    "type": "participant-info",
+                    "input": {
+                        "type": "select",
+                        "options": [
+                            "Technology",
+                            "Manufacturing",
+                            "Retail",
+                            "Healthcare",
+                            "Financial Services",
+                            "Education",
+                            "Government",
+                            "Non-profit",
+                            "Consulting",
+                            "Media & Entertainment"
+                        ],
+                        "allowOther": true
+                    },
+                    "required": false
+                },
+                {
+                    "text": "Company size",
+                    "input": {
+                        "type": "select",
+                        "options": [
+                            "1-10 employees",
+                            "11-50 employees",
+                            "51-200 employees",
+                            "201-1000 employees",
+                            "1001+ employees"
+                        ]
+                    },
+                    "required": false
                 }
             ]
         }
