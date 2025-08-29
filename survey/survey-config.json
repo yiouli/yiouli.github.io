@@ -310,56 +310,26 @@
             ]
         },
         {
+            "title": "Other desired improvements",
+            "questions": [
+                {
+                    "required": false,
+                    "input": {
+                        "type": "longText",
+                        "rows": 4
+                    },
+                    "text": "Is there anything else that would make \"managing people\" better for you?"
+                }
+            ]
+        },
+        {
             "title": "Participant Information (Optional)",
             "description": "Optionally provide your information to help us understand your background and responses better.\nLeave your email or Linkedin to receive insights from the survey. we might also contact you for follow-interview with gift card rewards.",
             "hideSurveyHeader": true,
             "excludeFromProgress": true,
             "questions": [
                 {
-                    "text": "Email address",
-                    "input": {
-                        "type": "email"
-                    },
-                    "placeholder": "your.email@company.com",
-                    "required": false
-                },
-                {
-                    "text": "LinkedIn profile URL",
-                    "input": {
-                        "type": "url"
-                    },
-                    "placeholder": "https://linkedin.com/in/yourprofile",
-                    "required": false
-                },
-                {
-                    "text": "Department",
-                    "input": {
-                        "type": "select",
-                        "options": [
-                            "Engineering",
-                            "Sales",
-                            "Marketing",
-                            "Operations",
-                            "Human Resources",
-                            "Finance",
-                            "Customer Success",
-                            "Product Management",
-                            "Design"
-                        ],
-                        "allowOther": true
-                    },
-                    "required": false
-                },
-                {
-                    "text": "Company website",
-                    "input": {
-                        "type": "url",
-                        "placeholder": "https://yourcompany.com"
-                    },
-                    "required": false
-                },
-                {
-                    "text": "Industry",
+                    "text": "Which industry is your company in?",
                     "input": {
                         "type": "select",
                         "options": [
@@ -379,7 +349,20 @@
                     "required": false
                 },
                 {
-                    "text": "Company size",
+                    "text": "What best describe your company's type?",
+                    "input": {
+                        "type": "select",
+                        "options": [
+                            "Startup",
+                            "Small-Medium Business",
+                            "Large Enterprise",
+                            "Non-profit",
+                            "Government"
+                        ]
+                    }
+                },
+                {
+                    "text": "What is the size of your company?",
                     "input": {
                         "type": "select",
                         "options": [
@@ -389,6 +372,49 @@
                             "201-1000 employees",
                             "1001+ employees"
                         ]
+                    },
+                    "required": false
+                },
+                {
+                    "text": "Which department do you work in?",
+                    "input": {
+                        "type": "select",
+                        "options": [
+                            "Engineering",
+                            "Sales",
+                            "Marketing",
+                            "Operations",
+                            "Human Resources",
+                            "Finance",
+                            "Customer Success",
+                            "Product Management",
+                            "Design"
+                        ],
+                        "allowOther": true
+                    },
+                    "required": false
+                },
+                {
+                    "text": "What's your email address?",
+                    "input": {
+                        "type": "email"
+                    },
+                    "placeholder": "your.email@company.com",
+                    "required": false
+                },
+                {
+                    "text": "What's your LinkedIn profile URL?",
+                    "input": {
+                        "type": "url"
+                    },
+                    "placeholder": "https://linkedin.com/in/yourprofile",
+                    "required": false
+                },
+                {
+                    "text": "What's your company website?",
+                    "input": {
+                        "type": "url",
+                        "placeholder": "https://yourcompany.com"
                     },
                     "required": false
                 }
