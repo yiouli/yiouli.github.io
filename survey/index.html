@@ -467,12 +467,194 @@
     let completedSections = new Set(); // Track which sections have been completed
     let interactedQuestions = new Set(); // Track which questions have been interacted with
 
+    // Local storage key for survey state
+    const STORAGE_KEY = 'survey_state';
+
+    // Save state to localStorage
+    function saveState() {
+      if (!surveyData) return;
+
+      const completedQuestions = [];
+
+      surveyData.sections.forEach((section, sectionIndex) => {
+        section.questions.forEach((question, questionIndex) => {
+          const questionKey = `${sectionIndex}_${questionIndex}`;
+
+          // A question is completed if:
+          // 1. Its section has been completed (user clicked Next), OR
+          // 2. The user has interacted with this question or any question after it
+          if (completedSections.has(sectionIndex) ||
+            hasInteractedWithQuestionOrLater(sectionIndex, questionIndex)) {
+
+            const importanceName = `importance_${sectionIndex}_${questionIndex}`;
+            const satisfactionName = `satisfaction_${sectionIndex}_${questionIndex}`;
+
+            completedQuestions.push({
+              question: question.text,
+              importance: responses[importanceName] || null,
+              satisfaction: responses[satisfactionName] || null
+            });
+          }
+        });
+      });
+
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(completedQuestions));
+      } catch (error) {
+        console.warn('Failed to save state to localStorage:', error);
+      }
+    }
+
+    // Load state from localStorage
+    function loadState() {
+      try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (!stored) return [];
+
+        const completedQuestions = JSON.parse(stored);
+        console.log('Previously completed questions:', completedQuestions);
+
+        return completedQuestions;
+      } catch (error) {
+        console.warn('Failed to load state from localStorage:', error);
+        return [];
+      }
+    }
+
+    // Clear saved state
+    function clearState() {
+      try {
+        localStorage.removeItem(STORAGE_KEY);
+      } catch (error) {
+        console.warn('Failed to clear state from localStorage:', error);
+      }
+    }
+
+    // Restore survey state based on saved data
+    function restoreSurveyState(savedQuestions) {
+      if (!savedQuestions || savedQuestions.length === 0) return;
+
+      // Create a map of saved questions by normalized text for fast lookup
+      const savedQuestionsMap = new Map();
+      savedQuestions.forEach(saved => {
+        if (saved.question) {
+          const normalizedText = saved.question.toLowerCase().trim();
+          savedQuestionsMap.set(normalizedText, saved);
+        }
+      });
+
+      // Iterate through current survey questions and restore values if match found
+      surveyData.sections.forEach((section, sectionIndex) => {
+        section.questions.forEach((question, questionIndex) => {
+          const normalizedQuestionText = question.text.toLowerCase().trim();
+          const savedQuestion = savedQuestionsMap.get(normalizedQuestionText);
+
+          if (savedQuestion) {
+            const importanceName = `importance_${sectionIndex}_${questionIndex}`;
+            const satisfactionName = `satisfaction_${sectionIndex}_${questionIndex}`;
+
+            // Restore the values
+            if (savedQuestion.importance) {
+              responses[importanceName] = savedQuestion.importance;
+            }
+            if (savedQuestion.satisfaction) {
+              responses[satisfactionName] = savedQuestion.satisfaction;
+            }
+
+            // Mark this question as interacted
+            const questionKey = `${sectionIndex}_${questionIndex}`;
+            interactedQuestions.add(questionKey);
+
+            console.log(`Restored question: "${question.text}" - Importance: ${savedQuestion.importance}, Satisfaction: ${savedQuestion.satisfaction}`);
+          }
+        });
+      });
+    }
+
+    // Restore slider values from saved responses
+    function restoreSliderValues() {
+      Object.keys(responses).forEach(name => {
+        const slider = document.querySelector(`input[name="${name}"]`);
+        if (slider) {
+          slider.value = responses[name];
+        }
+      });
+    }
+
+    // Find the first incomplete question and navigate to its section
+    function navigateToFirstIncompleteQuestion() {
+      if (!surveyData) return;
+
+      let firstIncompleteSection = null;
+      let firstIncompleteQuestion = null;
+
+      // Find the first incomplete question
+      outerLoop: for (let sectionIndex = 0; sectionIndex < surveyData.sections.length; sectionIndex++) {
+        const section = surveyData.sections[sectionIndex];
+
+        for (let questionIndex = 0; questionIndex < section.questions.length; questionIndex++) {
+          const questionKey = `${sectionIndex}_${questionIndex}`;
+
+          // Check if this question is incomplete
+          if (!completedSections.has(sectionIndex) &&
+            !hasInteractedWithQuestionOrLater(sectionIndex, questionIndex)) {
+            firstIncompleteSection = sectionIndex;
+            firstIncompleteQuestion = { sectionIndex, questionIndex };
+            break outerLoop;
+          }
+        }
+      }
+
+      // If we found an incomplete question, navigate to its section
+      if (firstIncompleteSection !== null) {
+        currentSectionIndex = firstIncompleteSection;
+        showCurrentSection();
+
+        // Scroll to the first incomplete question after a short delay to ensure DOM is ready
+        setTimeout(() => {
+          scrollToQuestion(firstIncompleteQuestion.sectionIndex, firstIncompleteQuestion.questionIndex);
+        }, 100);
+      }
+    }
+
+    // Scroll to a specific question, positioning it just below the progress bar
+    function scrollToQuestion(sectionIndex, questionIndex) {
+      const questionElement = document.querySelector(
+        `.section-card[data-section-index="${sectionIndex}"] .question[data-section-index="${sectionIndex}"][data-question-index="${questionIndex}"]`
+      );
+
+      if (questionElement) {
+        const progressBarHeight = document.querySelector('.progress-bar-container').offsetHeight;
+        const elementTop = questionElement.getBoundingClientRect().top + window.pageYOffset;
+        const targetPosition = elementTop - progressBarHeight - 10; // 10px buffer
+
+        window.scrollTo({
+          top: Math.max(0, targetPosition),
+          behavior: 'smooth'
+        });
+      }
+    }
+
     // Load survey configuration
     async function loadSurveyConfig() {
       try {
         const response = await fetch('survey-config.json');
         surveyData = await response.json();
+
+        // Load previously saved data
+        const savedQuestions = loadState();
+
         renderSurvey();
+
+        // Restore state if we have saved data
+        if (savedQuestions.length > 0) {
+          restoreSurveyState(savedQuestions);
+          restoreSliderValues();
+          updateProgress();
+
+          // Navigate to first incomplete question
+          navigateToFirstIncompleteQuestion();
+        }
       } catch (error) {
         console.error('Error loading survey configuration:', error);
         document.getElementById('form-title').textContent = 'Error loading survey';
@@ -756,6 +938,9 @@
 
       document.getElementById('progress-fill').style.width = percentage + '%';
       document.getElementById('progress-text').textContent = percentage + '%';
+
+      // Save state whenever progress is updated
+      saveState();
     }
 
     // Check if user has interacted with this question or any question that comes after it
@@ -857,6 +1042,9 @@
 
         console.log('Survey responses:', responses);
         alert('Survey submitted successfully! Check the console for responses.');
+
+        // Clear saved state after successful submission
+        clearState();
 
         // Here you would typically send the data to a server
         // fetch('/submit-survey', {
