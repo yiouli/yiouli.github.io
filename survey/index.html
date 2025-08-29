@@ -182,14 +182,24 @@
           if (completedSections.has(sectionIndex) ||
             hasInteractedWithQuestionOrLater(sectionIndex, questionIndex)) {
 
-            const importanceName = `importance_${sectionIndex}_${questionIndex}`;
-            const satisfactionName = `satisfaction_${sectionIndex}_${questionIndex}`;
-
-            completedQuestions.push({
+            const inputType = question.input?.type || 'impSatScales';
+            const questionData = {
               question: question.text,
-              importance: responses[importanceName] || null,
-              satisfaction: responses[satisfactionName] || null
-            });
+              type: inputType
+            };
+
+            if (inputType === 'impSatScales') {
+              const importanceName = `importance_${sectionIndex}_${questionIndex}`;
+              const satisfactionName = `satisfaction_${sectionIndex}_${questionIndex}`;
+              questionData.importance = responses[importanceName] || null;
+              questionData.satisfaction = responses[satisfactionName] || null;
+            } else {
+              // For other input types (email, url, select)
+              const responseName = `${sectionIndex}_${questionIndex}`;
+              questionData.value = responses[responseName] || null;
+            }
+
+            completedQuestions.push(questionData);
           }
         });
       });
@@ -246,33 +256,67 @@
           const savedQuestion = savedQuestionsMap.get(normalizedQuestionText);
 
           if (savedQuestion) {
-            const importanceName = `importance_${sectionIndex}_${questionIndex}`;
-            const satisfactionName = `satisfaction_${sectionIndex}_${questionIndex}`;
+            const inputType = question.input?.type || 'impSatScales';
 
-            // Restore the values
-            if (savedQuestion.importance) {
-              responses[importanceName] = savedQuestion.importance;
-            }
-            if (savedQuestion.satisfaction) {
-              responses[satisfactionName] = savedQuestion.satisfaction;
+            if (inputType === 'impSatScales') {
+              const importanceName = `importance_${sectionIndex}_${questionIndex}`;
+              const satisfactionName = `satisfaction_${sectionIndex}_${questionIndex}`;
+
+              // Restore the values
+              if (savedQuestion.importance) {
+                responses[importanceName] = savedQuestion.importance;
+              }
+              if (savedQuestion.satisfaction) {
+                responses[satisfactionName] = savedQuestion.satisfaction;
+              }
+
+              console.log(`Restored question: "${question.text}" - Importance: ${savedQuestion.importance}, Satisfaction: ${savedQuestion.satisfaction}`);
+            } else {
+              // For other input types (email, url, select)
+              const responseName = `${sectionIndex}_${questionIndex}`;
+              if (savedQuestion.value !== null && savedQuestion.value !== undefined) {
+                responses[responseName] = savedQuestion.value;
+                console.log(`Restored question: "${question.text}" - Value: ${savedQuestion.value}`);
+              }
             }
 
             // Mark this question as interacted
             const questionKey = `${sectionIndex}_${questionIndex}`;
             interactedQuestions.add(questionKey);
-
-            console.log(`Restored question: "${question.text}" - Importance: ${savedQuestion.importance}, Satisfaction: ${savedQuestion.satisfaction}`);
           }
         });
       });
     }
 
-    // Restore slider values from saved responses
+    // Restore input values from saved responses
     function restoreSliderValues() {
       Object.keys(responses).forEach(name => {
-        const slider = document.querySelector(`input[name="${name}"]`);
-        if (slider) {
-          slider.value = responses[name];
+        const input = document.querySelector(`input[name="${name}"], select[name="${name}"]`);
+        if (input) {
+          input.value = responses[name];
+
+          // Handle select inputs with "other" option
+          if (input.tagName === 'SELECT' && input.value === 'other') {
+            const questionMatch = name.match(/^(\d+)_(\d+)$/);
+            if (questionMatch) {
+              const sectionIndex = parseInt(questionMatch[1]);
+              const questionIndex = parseInt(questionMatch[2]);
+              const question = surveyData.sections[sectionIndex].questions[questionIndex];
+
+              if (question.input?.allowOther) {
+                const container = input.closest('.input-container');
+                showOtherInput(container, input, sectionIndex, questionIndex);
+
+                // Set the other input value
+                setTimeout(() => {
+                  const otherInput = container.querySelector('.other-input');
+                  if (otherInput) {
+                    otherInput.value = responses[name];
+                  }
+                }, 0);
+              }
+            }
+          }
         }
       });
     }
