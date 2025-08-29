@@ -315,15 +315,30 @@
 
     // Scroll to a specific question, positioning it just below the sticky headers
     function scrollToQuestion(sectionIndex, questionIndex) {
-      const questionElement = document.querySelector(
-        `.section-card[data-section-index="${sectionIndex}"] .question[data-section-index="${sectionIndex}"][data-question-index="${questionIndex}"]`
-      );
+      let targetElement;
 
-      if (questionElement) {
+      // If this is the first question in the section, scroll to the section header instead
+      if (questionIndex === 0) {
+        targetElement = document.querySelector(
+          `.section-card[data-section-index="${sectionIndex}"] .section-header`
+        );
+        // If no section header exists, fall back to the question
+        if (!targetElement) {
+          targetElement = document.querySelector(
+            `.section-card[data-section-index="${sectionIndex}"] .question[data-section-index="${sectionIndex}"][data-question-index="${questionIndex}"]`
+          );
+        }
+      } else {
+        targetElement = document.querySelector(
+          `.section-card[data-section-index="${sectionIndex}"] .question[data-section-index="${sectionIndex}"][data-question-index="${questionIndex}"]`
+        );
+      }
+
+      if (targetElement) {
         const progressBarHeight = document.querySelector('.progress-bar-container').offsetHeight;
         const titleCardHeight = document.querySelector('.title-card').offsetHeight;
         const totalStickyHeight = progressBarHeight + titleCardHeight;
-        const elementTop = questionElement.getBoundingClientRect().top + window.pageYOffset;
+        const elementTop = targetElement.getBoundingClientRect().top + window.pageYOffset;
         const targetPosition = elementTop - totalStickyHeight - 10; // 10px buffer
 
         window.scrollTo({
