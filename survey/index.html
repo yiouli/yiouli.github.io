@@ -417,6 +417,19 @@
         setTimeout(() => {
           scrollToQuestion(firstIncompleteQuestion.sectionIndex, firstIncompleteQuestion.questionIndex);
         }, 100);
+      } else {
+        // All questions are complete - navigate to the last section and scroll to the last question
+        const lastSectionIndex = surveyData.sections.length - 1;
+        const lastSection = surveyData.sections[lastSectionIndex];
+        const lastQuestionIndex = lastSection.questions.length - 1;
+
+        currentSectionIndex = lastSectionIndex;
+        showCurrentSection();
+
+        // Scroll to the last question after a short delay
+        setTimeout(() => {
+          scrollToQuestion(lastSectionIndex, lastQuestionIndex);
+        }, 100);
       }
     }
 
