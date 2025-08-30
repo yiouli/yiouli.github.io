@@ -141,15 +141,27 @@
       document.getElementById('success-view').classList.add('active');
       document.getElementById('survey-form').style.display = 'none';
 
+      // Hide the survey header in success view
+      document.querySelector('.title-card').style.display = 'none';
+
       // Update progress to 100%
       document.getElementById('progress-fill').style.width = '100%';
       document.getElementById('progress-text').textContent = '100%';
+
+      // Update body padding since title card is now hidden
+      updateBodyPadding();
     }
 
     // Hide success view
     function hideSuccessView() {
       document.getElementById('success-view').classList.remove('active');
       document.getElementById('survey-form').style.display = 'block';
+
+      // Show the survey header when returning to survey
+      document.querySelector('.title-card').style.display = 'block';
+
+      // Update body padding since title card is now visible
+      updateBodyPadding();
     }
 
     // Start new survey
