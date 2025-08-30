@@ -24,15 +24,14 @@ function initSupabase(url = SUPABASE_URL, key = SUPABASE_ANON_KEY) {
 initSupabase();
 
 // Store survey response to Supabase - updated for individual question records
-async function storeSurveyResponse(responses, surveyData, tableName = 'needs_survey') {
+async function storeSurveyResponse(responses, surveyData) {
   if (!supabaseClient) {
     throw new Error('Supabase client not initialized. Call initSupabase() first.');
   }
 
   try {
-    const sessionId = generateSessionId();
-    const timestamp = new Date().toISOString();
     const questionResponses = [];
+    const participantData = [];
 
     // Create individual records for each question response
     surveyData.sections.forEach((section, sectionIndex) => {
@@ -45,10 +44,14 @@ async function storeSurveyResponse(responses, surveyData, tableName = 'needs_sur
 
         if (importance && satisfaction) {
           questionResponses.push({
-            session_id: sessionId,
             need: question.text,
             importance: parseInt(importance),
             satisfaction: parseInt(satisfaction),
+          });
+        } else {
+          participantData.push({
+            question: question.text,
+            response: responses[`${sectionIndex}_${questionIndex}`],
           });
         }
       });
@@ -59,10 +62,12 @@ async function storeSurveyResponse(responses, surveyData, tableName = 'needs_sur
     }
 
     // Insert all question responses (don't use .select() since we can't read)
-    const { error } = await supabaseClient
-      .from(tableName)
-      .insert(questionResponses);
+    const { data, error } = await supabaseClient.rpc('submit_survey', {
+      p_participant_data: participantData,
+      p_needs: questionResponses,
+    });
 
+    console.log(data);
     if (error) {
       throw error;
     }
@@ -70,7 +75,7 @@ async function storeSurveyResponse(responses, surveyData, tableName = 'needs_sur
     console.log('Survey responses stored successfully');
     return {
       success: true,
-      session_id: sessionId,
+      session_id: data.participant_id,
       response_count: questionResponses.length
     };
 
@@ -81,11 +86,6 @@ async function storeSurveyResponse(responses, surveyData, tableName = 'needs_sur
       error: error.message || 'Failed to store survey response'
     };
   }
-}
-
-// Generate a unique session ID
-function generateSessionId() {
-  return 'survey_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
 }
 
 // Export functions for use in other files

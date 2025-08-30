@@ -1197,8 +1197,6 @@
         completedSections.add(currentSectionIndex);
         updateProgress();
 
-        console.log('Survey responses:', responses);
-
         try {
           // Store to Supabase if configured
           if (window.SupabaseUtils) {
@@ -1290,11 +1288,6 @@
     // Update padding on window resize
     window.addEventListener('resize', updateBodyPadding);
   </script>
-</body>
-
-</html>
-window.addEventListener('resize', updateBodyPadding);
-</script>
 </body>
 
 </html>
