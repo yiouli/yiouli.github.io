@@ -1,0 +1,117 @@
+{
+    "title": "What would make \"managing people\" better?",
+    "description": "For each objective below, please rate how important it is for improving people management and how satisfied you are with it in your current role.",
+    "sections": [
+        {
+            "questions": [
+                {
+                    "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
+                    "text": "increase support for addressing employee complaints"
+                },
+                {
+                    "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
+                    "text": "increase employee buy-in with performance expectations"
+                },
+                {
+                    "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
+                    "text": "reduce employee resistance during performance improvement discussions"
+                },
+                {
+                    "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
+                    "text": "maximize visibility of employee achievements to leadership"
+                },
+                {
+                    "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
+                    "text": "minimize employee surprise when receiving performance ratings"
+                },
+                {
+                    "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
+                    "text": "maximize understanding of performance context when taking on new employee"
+                },
+                {
+                    "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
+                    "text": "minimize time spent documenting employee performance"
+                },
+                {
+                    "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
+                    "text": "minimize effort required to carry out performance improvement plans"
+                },
+                {
+                    "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
+                    "text": "minimize need for performance improvement plan"
+                },
+                {
+                    "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
+                    "text": "maximize accuracy of performance rating decisions"
+                },
+                {
+                    "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
+                    "text": "minimize time to complete IT access changes during on/offboarding"
+                },
+                {
+                    "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
+                    "text": "maximize early detection of employee dissatisfaction"
+                },
+                {
+                    "required": true,
+                    "input": {
+                        "type": "impSatScales"
+                    },
+                    "text": "reduce uncertainty of outcome for compensation adjustment requests"
+                },
+                {
+                    "required": false,
+                    "input": {
+                        "type": "longText",
+                        "rows": 4
+                    },
+                    "text": "Is there anything else that would make \"managing people\" better for you?"
+                },
+                {
+                    "text": "What's your name?",
+                    "input": {
+                        "type": "longText",
+                        "rows": 1
+                    },
+                    "required": false
+                }
+            ]
+        }
+    ]
+}

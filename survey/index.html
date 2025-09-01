@@ -63,7 +63,7 @@
   <div class="progress-bar-container">
     <div class="progress-bottom">
       <div class="progress-text" id="progress-text">0%</div>
-      <div class="time-estimate" id="time-estimate">5min to complete</div>
+      <div class="time-estimate" id="time-estimate">Loading...</div>
       <button class="reset-btn" id="reset-btn" onclick="resetSurvey()">Reset Survey</button>
     </div>
     <div class="progress-bar">
@@ -98,6 +98,9 @@
 
   <script src="supabase-utils.js"></script>
   <script>
+    // Configuration
+    const TOTAL_ESTIMATED_MINUTES = 1; // Easy to change - total estimated time to complete survey
+
     let surveyData = null;
     let responses = {};
     let currentSectionIndex = 0;
@@ -471,8 +474,11 @@
     // Load survey configuration
     async function loadSurveyConfig() {
       try {
-        const response = await fetch('survey-config.json');
+        const response = await fetch('survey-config-interviewees.json');
         surveyData = await response.json();
+
+        // Set initial time estimate
+        document.getElementById('time-estimate').textContent = `${TOTAL_ESTIMATED_MINUTES}min to complete`;
 
         // Check if survey was already submitted
         if (isSurveySubmitted()) {
@@ -1050,7 +1056,7 @@
 
       // Update time estimation
       const remainingPercentage = 100 - percentage;
-      const estimatedMinutes = Math.ceil((remainingPercentage / 100) * 5);
+      const estimatedMinutes = Math.ceil((remainingPercentage / 100) * TOTAL_ESTIMATED_MINUTES);
       const timeEstimateElement = document.getElementById('time-estimate');
 
       if (percentage === 100) {
