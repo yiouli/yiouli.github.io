@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PROVE IT</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body,
+    html {
+      height: 100vh;
+      font-family: 'Arial Black', 'Helvetica Neue', 'Trebuchet MS', 'Impact', sans-serif;
+      background: #000000;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      position: relative;
+      padding: 0 60px;
+    }
+
+    .motto {
+      font-size: clamp(5rem, 16vw, 12rem);
+      font-weight: 900;
+      text-align: center;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+      line-height: 0.8;
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+      font-family: 'Arial Black', 'Impact', 'Helvetica Neue', sans-serif;
+    }
+
+    .motto .highlight {
+      display: block;
+      margin-top: 0.1em;
+    }
+
+
+
+    .back-link {
+      position: absolute;
+      top: 40px;
+      left: 40px;
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: 400;
+      padding: 12px 0;
+      transition: color 0.2s ease;
+      z-index: 3;
+    }
+
+    .back-link:hover {
+      color: #ffffff;
+    }
+
+    .subtitle {
+      font-size: clamp(1.2rem, 3vw, 1.8rem);
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.6);
+      text-align: center;
+      margin-top: 2rem;
+      letter-spacing: 0.01em;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 0 20px;
+      }
+
+      .motto {
+        font-size: clamp(3.5rem, 18vw, 8rem);
+        line-height: 0.75;
+      }
+
+      .back-link {
+        top: 20px;
+        left: 20px;
+        font-size: 0.9rem;
+      }
+
+      .subtitle {
+        font-size: clamp(1rem, 4vw, 1.2rem);
+        margin-top: 1.5rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <a href="index.html" class="back-link">← Back to Home</a>
+
+  <div class="container">
+    <div>
+      <h1 class="motto">
+        Prove them wrong
+      </h1>
+      <p class="subtitle">
+        Silence the doubters.<br>
+        Show them you're better.
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // Simple fade-in effect on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      const motto = document.querySelector('.motto');
+      const subtitle = document.querySelector('.subtitle');
+
+      motto.style.opacity = '0';
+      motto.style.transform = 'translateY(30px)';
+      subtitle.style.opacity = '0';
+      subtitle.style.transform = 'translateY(20px)';
+
+      setTimeout(() => {
+        motto.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+        motto.style.opacity = '1';
+        motto.style.transform = 'translateY(0)';
+
+        setTimeout(() => {
+          subtitle.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+          subtitle.style.opacity = '1';
+          subtitle.style.transform = 'translateY(0)';
+        }, 300);
+      }, 200);
+    });
+  </script>
+</body>
+
+</html>
